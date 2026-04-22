@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Gamaar Cinema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+:root{
+  --gold:#9b7835;
+  --gold-2:#6f5424;
+  --gold-light:#c7a15a;
+  --gold-soft:rgba(155,120,53,.18);
+}
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    linear-gradient(180deg,rgba(9,10,14,.72),#0f1015 340px),
+    radial-gradient(circle at 14% 0%,rgba(137,24,42,.32),transparent 36rem),
+    radial-gradient(circle at 86% 8%,rgba(204,159,79,.14),transparent 32rem),
+    #0f1015;
+  color:#f3ece0;
+  font-family:"Manrope",Arial,sans-serif;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:64px 64px;
+  opacity:.28;
+  mask-image:linear-gradient(to bottom,#000,transparent 58%);
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:16px 28px;
+  background:rgba(12,13,17,.78);
+  border-bottom:1px solid rgba(226,191,116,.22);
+  backdrop-filter:blur(18px);
+}
+h1{
+  margin:0;
+  color:#c7a15a;
+  font-family:"Cormorant Garamond",Georgia,serif;
+  font-size:32px;
+  font-weight:700;
+  letter-spacing:.03em;
+  white-space:nowrap;
+}
+h1::after{content:"";display:block;width:42px;height:1px;background:var(--gold);margin-top:3px}
+.top-search{max-width:380px;margin:0 0 0 auto}
+.header-actions{display:flex;align-items:center;gap:10px}
+.language-select{width:auto;min-width:132px;margin:0;background:rgba(255,255,255,.055);border-color:rgba(226,191,116,.2)}
+.user-pill{display:flex;align-items:center;gap:9px;padding:7px 11px;background:rgba(255,255,255,.055);border:1px solid rgba(226,191,116,.2);border-radius:999px;cursor:pointer}
+.avatar{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;font-weight:800}
+.container{display:grid;grid-template-columns:350px 1fr;gap:30px;max-width:1460px;margin:0 auto;padding:30px}
+.panel{
+  background:linear-gradient(180deg,rgba(30,30,37,.86),rgba(18,18,24,.92));
+  border:1px solid rgba(226,191,116,.18);
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 24px 70px rgba(0,0,0,.34);
+}
+.panel-title{margin:0 0 16px;color:#c7a15a;font-family:"Cormorant Garamond",Georgia,serif;font-size:28px;font-weight:600}
+input,select{
+  width:100%;
+  margin-bottom:11px;
+  padding:12px 13px;
+  background:rgba(7,8,12,.74);
+  color:#fff8ed;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;
+  outline:none;
+  font:500 13px/1.2 "Manrope",Arial,sans-serif;
+}
+input::placeholder{color:#897f70}
+input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+button{padding:10px 13px;border:0;border-radius:8px;cursor:pointer;font-weight:800;font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-family:"Manrope",Arial,sans-serif}
+.primary{background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014}
+.secondary{background:rgba(255,255,255,.07);color:#e2d7c6;border:1px solid rgba(255,255,255,.12)}
+.danger{background:#5c2529;color:#ffd7d7}
+.button-row{display:flex;gap:8px}.button-row button{flex:1}
+#filter{max-width:220px;margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:18px}
+.card{
+  position:relative;
+  background:#171820;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 18px 50px rgba(0,0,0,.36);
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+}
+.card:hover{transform:translateY(-5px);border-color:rgba(155,120,53,.55);box-shadow:0 28px 70px rgba(0,0,0,.5)}
+.card img{width:100%;height:215px;object-fit:cover;background:#0b0b0f;display:block}
+.card-body{padding:10px 12px}
+.card b{display:block;margin-bottom:5px;color:#fff2d2;font-family:"Cormorant Garamond",Georgia,serif;font-size:21px;font-weight:700;line-height:1}
+.small{font-size:11px;color:#bdb3a4;line-height:1.32}
+.actions{display:flex;gap:7px;margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}.actions button{flex:1;background:rgba(255,255,255,.065);color:#ddd;padding:7px 8px;font-size:9px}
+.empty{text-align:center;padding:52px;border:1px dashed rgba(226,191,116,.3);background:rgba(255,255,255,.03);border-radius:10px;grid-column:1/-1;color:#c8bda9}
+.tmdb-result{display:flex;gap:10px;align-items:center;padding:8px;border-bottom:1px solid #2c2d35;cursor:pointer;color:#e8ddc8}.tmdb-result:hover{background:#272319}
+.tmdb-result img{width:42px;height:62px;object-fit:cover;background:#0b0b0f;border-radius:4px;flex:none}
+.tmdb-title{font-weight:800;color:#fff1cf}.tmdb-meta{font-size:12px;color:#b8b1a8;margin-top:3px}
+.overview{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:6px}
+.trailer-link{display:block;margin-top:7px;padding:7px 8px;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;text-align:center;text-decoration:none;border-radius:6px;font-weight:800;font-size:9px;text-transform:uppercase}
+.file-picker{margin-bottom:11px}
+.file-picker input{display:none}
+.file-picker label{display:flex;align-items:center;justify-content:center;min-height:42px;padding:10px 12px;background:rgba(255,255,255,.045);border:1px solid rgba(155,120,53,.35);border-radius:8px;color:#cfc4b2;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.file-picker label:hover{background:rgba(155,120,53,.12);color:#e5d2aa}
+.chat-btn{position:fixed;right:22px;bottom:22px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;box-shadow:0 14px 38px rgba(0,0,0,.48)}
+.chat-box{position:fixed;right:22px;bottom:90px;width:350px;height:460px;background:#171820;border:1px solid rgba(226,191,116,.25);border-radius:10px;display:none;flex-direction:column;overflow:hidden;box-shadow:0 22px 65px rgba(0,0,0,.58)}
+.chat-body{flex:1;overflow:auto;padding:14px;font-size:13px;display:flex;flex-direction:column;gap:10px}
+.msg-user,.msg-ai{max-width:88%;padding:10px 12px;border-radius:10px;line-height:1.45;white-space:pre-wrap;word-break:break-word}
+.msg-user{align-self:flex-end;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#121217}
+.msg-ai{align-self:flex-start;background:rgba(255,255,255,.075);color:#f3ece0;border:1px solid rgba(255,255,255,.08)}
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72)}
+.modal.open{display:flex}.modal-card{width:min(640px,100%);max-height:90vh;overflow:auto;background:#171820;border:1px solid rgba(226,191,116,.24);border-radius:12px;padding:20px;box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.modal-head h2{margin:0;color:#c7a15a;font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:600}
+.profile-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px}
+.profile-card{padding:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.11);border-radius:10px;cursor:pointer}.profile-card.active{border-color:var(--gold)}
+.profile-card strong{display:block;margin-top:8px}
+.section{padding:15px;border:1px solid rgba(255,255,255,.11);border-radius:10px;margin-bottom:14px}
+.section h3{margin:0 0 10px;color:#f0ddb4;font-size:15px}
+@media (max-width:800px){header{flex-wrap:wrap;padding:14px}.top-search{order:3;max-width:none;flex-basis:100%}.container{grid-template-columns:1fr;padding:14px}.grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}.card img{height:205px}h1{font-size:28px}}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Le Gamaar Cinema</h1>
+<input class="top-search" id="search" placeholder="Buscar en la colección...">
+<div class="header-actions">
+  <select class="language-select" id="languageSelect" onchange="changeLanguage(this.value)">
+    <option value="ca">Català</option>
+    <option value="es">Castellano</option>
+    <option value="en">English</option>
+  </select>
+  <button class="secondary" id="profilesBtn" onclick="openProfiles()">Socios</button>
+  <button class="secondary" id="settingsBtn" onclick="openSettings()">Ajustes</button>
+  <div class="user-pill" onclick="openProfiles()">
+    <div class="avatar" id="currentAvatar">U</div>
+    <span id="currentUserName">Usuario</span>
+  </div>
+</div>
+</header>
+
+<div class="container">
+<div class="panel">
+<h2 class="panel-title" id="curationTitle">Añadir película</h2>
+<input id="tmdbSearch" placeholder="Buscar título en TMDB...">
+<div id="tmdbResults"></div>
+
+<form id="form">
+<input type="hidden" id="id">
+<input id="title" placeholder="Título" required>
+<input id="year" placeholder="Año" required>
+<input id="actor" placeholder="Actor principal">
+<input id="actress" placeholder="Actriz principal">
+<input id="director" placeholder="Director">
+<input id="genre" placeholder="Género">
+<input id="coverUrl" placeholder="URL portada">
+<input id="trailerUrl" placeholder="URL trailer">
+<input id="overview" placeholder="Sinopsis">
+<div class="file-picker">
+  <input type="file" id="file" accept="image/*" onchange="updateFileLabel()">
+  <label for="file" id="fileLabel">Seleccionar carátula</label>
+</div>
+<div class="button-row">
+  <button class="primary" id="addMovieBtn">Añadir</button>
+  <button type="button" class="secondary" id="cancelMovieBtn" onclick="cancelMovie()">Cancelar</button>
+</div>
+</form>
+</div>
+
+<main>
+<select id="filter">
+<option value="">Todos</option>
+<option>Acción</option>
+<option>Drama</option>
+<option>Comedia</option>
+<option>Terror</option>
+</select>
+<div class="grid" id="list"></div>
+</main>
+</div>
+
+<button class="chat-btn" onclick="toggleChat()">AI</button>
+<div class="chat-box" id="chat">
+<div class="chat-body" id="chatBody"></div>
+<input id="chatInput" placeholder="Pregunta..." onkeydown="if(event.key==='Enter')sendChat()">
+<button id="sendChatBtn" onclick="sendChat()">Enviar</button>
+</div>
+
+<div class="modal" id="profilesModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2 id="profilesTitle">Socios</h2>
+      <button class="secondary close-btn" onclick="closeModal('profilesModal')">Cerrar</button>
+    </div>
+    <div class="profile-list" id="profileList"></div>
+    <div class="section">
+      <h3 id="profileFormTitle">Añadir socio</h3>
+      <input type="hidden" id="profileId">
+      <input id="profileName" placeholder="Nombre del socio">
+      <input id="profileAvatar" placeholder="Inicial o emoji del avatar" maxlength="2">
+      <div class="button-row">
+        <button class="primary" id="saveProfileBtn" onclick="saveProfile()">Guardar socio</button>
+        <button class="secondary" id="clearProfileBtn" onclick="resetProfileForm()">Limpiar</button>
+        <button class="danger" id="deleteProfileBtn" onclick="deleteProfile()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="settingsModal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2 id="settingsTitle">Ajustes</h2>
+      <button class="secondary close-btn" onclick="closeModal('settingsModal')">Cerrar</button>
+    </div>
+    <div class="section">
+      <h3 id="apisTitle">APIs</h3>
+      <input id="settingsTmdbKey" placeholder="API key de TMDB">
+      <input id="settingsOpenRouterKey" type="password" placeholder="Routercode / API key de OpenRouter">
+      <input id="settingsOpenRouterModel" placeholder="Modelo OpenRouter" value="openrouter/auto">
+      <button class="primary" id="saveSettingsBtn" onclick="saveSettings()">Guardar ajustes</button>
+    </div>
+    <div class="small" id="settingsNote">Las claves se guardan solo en este navegador con localStorage.</div>
+  </div>
+</div>
+
+<script>
+const USERS_KEY = "vc_users";
+const CURRENT_USER_KEY = "vc_current_user";
+const SETTINGS_KEY = "vc_settings";
+const LANG_KEY = "vc_language";
+const EMPTY_POSTER = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDIwMCAzMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMTEiLz48dGV4dCB4PSIxMDAiIHk9IjE1MCIgZmlsbD0iIzY2NiIgZm9udC1zaXplPSIxNCIgZm9udC1mYW1pbHk9IkFyaWFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TaW4gcG9ydGFkYTwvdGV4dD48L3N2Zz4=";
+const LANG = {
+  ca: {
+    search:"Cerca a la col·lecció...", profiles:"Socis", settings:"Ajustos", curation:"Afegir pel·lícula",
+    tmdbSearch:"Cerca un títol a TMDB...", title:"Títol", year:"Any", actor:"Actor principal", actress:"Actriu principal",
+    director:"Director", genre:"Gènere", cover:"URL de la caràtula", trailer:"URL del tràiler", overview:"Sinopsi",
+    add:"Afegir", cancel:"Cancel·lar", all:"Tots", empty:"Cap pel·lícula en aquest soci", edit:"Editar", del:"Esborrar", file:"Seleccionar caràtula",
+    trailerBtn:"Veure tràiler", chat:"Pregunta...", send:"Enviar", close:"Tancar", addProfile:"Afegir soci",
+    editProfile:"Editar soci", profileName:"Nom del soci", profileAvatar:"Inicial o emoji de l'avatar",
+    saveProfile:"Guardar soci", clear:"Netejar", deleteProfile:"Eliminar", apis:"APIs",
+    tmdbKey:"API key de TMDB", routerKey:"Routercode / API key d'OpenRouter", model:"Model OpenRouter",
+    saveSettings:"Guardar ajustos", settingsNote:"Les claus es guarden només en aquest navegador amb localStorage.",
+    clickEnter:"Click per entrar", noTmdbKey:"Afegeix la teva API key de TMDB a Ajustos.", searching:"Cercant...",
+    tmdbError:"Error en cercar a TMDB.", tmdbLoadError:"Error en carregar la pel·lícula.",
+    noOpenRouter:"Afegeix el teu routercode d'OpenRouter a Ajustos.", noYear:"Sense any", noRating:"Sense nota",
+    noOverview:"Sense sinopsi disponible", noResponse:"Sense resposta.", openRouterError:"Error en connectar amb OpenRouter.",
+    writeName:"Escriu un nom de soci.", chooseProfile:"Selecciona un perfil per eliminar.",
+    keepOne:"Ha de quedar almenys un soci.", confirmDeleteProfile:"Eliminar aquest soci i el seu catàleg?",
+    confirmDeleteMovie:"Eliminar?", userLabel:"Soci", catalogLabel:"Catàleg", noYearCatalog:"sense any"
+  },
+  es: {
+    search:"Buscar en la colección...", profiles:"Socios", settings:"Ajustes", curation:"Añadir película",
+    tmdbSearch:"Buscar título en TMDB...", title:"Título", year:"Año", actor:"Actor principal", actress:"Actriz principal",
+    director:"Director", genre:"Género", cover:"URL portada", trailer:"URL trailer", overview:"Sinopsis",
+    add:"Añadir", cancel:"Cancelar", all:"Todos", empty:"Sin películas en este usuario", edit:"Edit", del:"Del", file:"Seleccionar carátula",
+    trailerBtn:"Ver trailer", chat:"Pregunta...", send:"Enviar", close:"Cerrar", addProfile:"Añadir socio",
+    editProfile:"Editar socio", profileName:"Nombre del socio", profileAvatar:"Inicial o emoji del avatar",
+    saveProfile:"Guardar socio", clear:"Limpiar", deleteProfile:"Eliminar", apis:"APIs",
+    tmdbKey:"API key de TMDB", routerKey:"Routercode / API key de OpenRouter", model:"Modelo OpenRouter",
+    saveSettings:"Guardar ajustes", settingsNote:"Las claves se guardan solo en este navegador con localStorage.",
+    clickEnter:"Click para entrar", noTmdbKey:"Añade tu API key de TMDB en Ajustes.", searching:"Buscando...",
+    tmdbError:"Error al buscar en TMDB.", tmdbLoadError:"Error al cargar la película.",
+    noOpenRouter:"Añade tu routercode de OpenRouter en Ajustes.", noYear:"Sin año", noRating:"Sin nota",
+    noOverview:"Sin sinopsis disponible", noResponse:"Sin respuesta.", openRouterError:"Error al conectar con OpenRouter.",
+    writeName:"Escribe un nombre de usuario.", chooseProfile:"Selecciona un perfil para eliminar.",
+    keepOne:"Debe quedar al menos un usuario.", confirmDeleteProfile:"¿Eliminar este usuario y su catálogo?",
+    confirmDeleteMovie:"¿Eliminar?", userLabel:"Usuario", catalogLabel:"Catálogo", noYearCatalog:"sin año"
+  },
+  en: {
+    search:"Search the collection...", profiles:"Members", settings:"Settings", curation:"Add movie",
+    tmdbSearch:"Search title on TMDB...", title:"Title", year:"Year", actor:"Lead actor", actress:"Lead actress",
+    director:"Director", genre:"Genre", cover:"Poster URL", trailer:"Trailer URL", overview:"Synopsis",
+    add:"Add", cancel:"Cancel", all:"All", empty:"No films for this member", edit:"Edit", del:"Delete", file:"Select poster",
+    trailerBtn:"Watch trailer", chat:"Ask...", send:"Send", close:"Close", addProfile:"Add member",
+    editProfile:"Edit member", profileName:"Member name", profileAvatar:"Avatar initial or emoji",
+    saveProfile:"Save member", clear:"Clear", deleteProfile:"Delete", apis:"APIs",
+    tmdbKey:"TMDB API key", routerKey:"OpenRouter routercode / API key", model:"OpenRouter model",
+    saveSettings:"Save settings", settingsNote:"Keys are stored only in this browser with localStorage.",
+    clickEnter:"Click to enter", noTmdbKey:"Add your TMDB API key in Settings.", searching:"Searching...",
+    tmdbError:"Error searching TMDB.", tmdbLoadError:"Error loading the film.",
+    noOpenRouter:"Add your OpenRouter routercode in Settings.", noYear:"No year", noRating:"No rating",
+    noOverview:"No synopsis available", noResponse:"No response.", openRouterError:"Error connecting to OpenRouter.",
+    writeName:"Enter a member name.", chooseProfile:"Select a profile to delete.",
+    keepOne:"At least one member must remain.", confirmDeleteProfile:"Delete this member and their catalog?",
+    confirmDeleteMovie:"Delete?", userLabel:"Member", catalogLabel:"Catalog", noYearCatalog:"no year"
+  }
+};
+
+let users = JSON.parse(localStorage.getItem(USERS_KEY)) || [{id:"default",name:"Principal",avatar:"P"}];
+let currentUserId = localStorage.getItem(CURRENT_USER_KEY) || users[0].id;
+let settings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {tmdbKey:"",openRouterKey:"",openRouterModel:"openrouter/auto"};
+let currentLang = localStorage.getItem(LANG_KEY) || "ca";
+let data = [];
+let editing = null;
+let tmdbTimer = null;
+let tmdbDraft = {};
+
+function catalogKey(){return `vc_movies_${currentUserId}`}
+function currentUser(){return users.find(u => u.id === currentUserId) || users[0]}
+function saveUsers(){localStorage.setItem(USERS_KEY,JSON.stringify(users))}
+function saveCatalog(){localStorage.setItem(catalogKey(),JSON.stringify(data))}
+
+function loadCatalog(){
+  const saved = localStorage.getItem(catalogKey());
+  if(saved){
+    data = JSON.parse(saved) || [];
+    return;
+  }
+
+  const oldCatalog = localStorage.getItem("movies");
+  if(currentUserId === "default" && oldCatalog){
+    data = JSON.parse(oldCatalog) || [];
+    saveCatalog();
+    return;
+  }
+
+  data = [];
+}
+
+function updateCurrentUser(){
+  const u = currentUser();
+  currentUserId = u.id;
+  localStorage.setItem(CURRENT_USER_KEY,currentUserId);
+  currentAvatar.textContent = u.avatar || u.name[0] || "U";
+  currentUserName.textContent = u.name;
+}
+
+function escapeHtml(value){
+  return String(value || "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+}
+
+function t(key){return LANG[currentLang][key] || LANG.ca[key] || key}
+
+function setText(id,key){
+  const el = document.getElementById(id);
+  if(el) el.textContent = t(key);
+}
+
+function setPlaceholder(id,key){
+  const el = document.getElementById(id);
+  if(el) el.placeholder = t(key);
+}
+
+function applyLanguage(){
+  languageSelect.value = currentLang;
+  setPlaceholder("search","search");
+  setPlaceholder("tmdbSearch","tmdbSearch");
+  setPlaceholder("title","title");
+  setPlaceholder("year","year");
+  setPlaceholder("actor","actor");
+  setPlaceholder("actress","actress");
+  setPlaceholder("director","director");
+  setPlaceholder("genre","genre");
+  setPlaceholder("coverUrl","cover");
+  setPlaceholder("trailerUrl","trailer");
+  setPlaceholder("overview","overview");
+  setPlaceholder("chatInput","chat");
+  setPlaceholder("profileName","profileName");
+  setPlaceholder("profileAvatar","profileAvatar");
+  setPlaceholder("settingsTmdbKey","tmdbKey");
+  setPlaceholder("settingsOpenRouterKey","routerKey");
+  setPlaceholder("settingsOpenRouterModel","model");
+  setText("profilesBtn","profiles");
+  setText("settingsBtn","settings");
+  setText("curationTitle","curation");
+  setText("addMovieBtn","add");
+  setText("cancelMovieBtn","cancel");
+  if(!file.files.length) setText("fileLabel","file");
+  setText("sendChatBtn","send");
+  setText("profilesTitle","profiles");
+  setText("settingsTitle","settings");
+  setText("apisTitle","apis");
+  setText("saveProfileBtn","saveProfile");
+  setText("clearProfileBtn","clear");
+  setText("deleteProfileBtn","deleteProfile");
+  setText("saveSettingsBtn","saveSettings");
+  setText("settingsNote","settingsNote");
+  document.querySelectorAll(".close-btn").forEach(btn => btn.textContent = t("close"));
+  const allOption = filter.querySelector("option[value='']");
+  if(allOption) allOption.textContent = t("all");
+  if(!profileId.value) profileFormTitle.textContent = t("addProfile");
+}
+
+function changeLanguage(lang){
+  currentLang = lang;
+  localStorage.setItem(LANG_KEY,lang);
+  applyLanguage();
+  render();
+  if(profilesModal.classList.contains("open")) renderProfiles();
+}
+
+function updateFileLabel(){
+  fileLabel.textContent = file.files[0]?.name || t("file");
+}
+
+function render(){
+  updateCurrentUser();
+  const q = search.value.toLowerCase();
+  const f = filter.value;
+  const filtered = data.filter(m => (!q || (m.title || "").toLowerCase().includes(q)) && (!f || m.genre === f));
+
+  if(!filtered.length){
+    list.innerHTML = `<div class="empty">${t("empty")}</div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(m => `
+    <div class="card">
+      <img src="${escapeHtml(m.cover || EMPTY_POSTER)}" alt="${escapeHtml(m.title)}" onerror="this.src='${EMPTY_POSTER}'">
+      <div class="card-body">
+        <b>${escapeHtml(m.title)}</b>
+        <div class="small">${escapeHtml(m.year)}</div>
+        <div class="small">${escapeHtml(m.genre)}</div>
+        <div class="small">Dir: ${escapeHtml(m.director)}</div>
+        <div class="small">${escapeHtml(m.actor)} / ${escapeHtml(m.actress)}</div>
+        ${m.runtime ? `<div class="small">${escapeHtml(m.runtime)} min</div>` : ""}
+        ${m.vote ? `<div class="small">TMDB: ${escapeHtml(m.vote)}/10</div>` : ""}
+        ${m.overview ? `<div class="small overview">${escapeHtml(m.overview)}</div>` : ""}
+        ${m.trailer ? `<a class="trailer-link" href="${escapeHtml(m.trailer)}" target="_blank" rel="noopener">${t("trailerBtn")}</a>` : ""}
+        <div class="actions">
+          <button onclick="editMovie('${m.id}')">${t("edit")}</button>
+          <button onclick="deleteMovie('${m.id}')">${t("del")}</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+form.onsubmit = e => {
+  e.preventDefault();
+  const currentMovie = editing ? data.find(x => x.id === editing) || {} : {};
+  const m = {
+    id: editing || Date.now() + "",
+    title: title.value,
+    year: year.value,
+    actor: actor.value,
+    actress: actress.value,
+    director: director.value,
+    genre: genre.value,
+    cover: coverUrl.value,
+    trailer: trailerUrl.value,
+    overview: overview.value,
+    runtime: tmdbDraft.runtime || currentMovie.runtime || "",
+    vote: tmdbDraft.vote || currentMovie.vote || "",
+    tmdbId: tmdbDraft.tmdbId || currentMovie.tmdbId || ""
+  };
+
+  if(file.files[0]){
+    const r = new FileReader();
+    r.onload = () => {m.cover = r.result; saveMovie(m)};
+    r.readAsDataURL(file.files[0]);
+  }else{
+    saveMovie(m);
+  }
+};
+
+function saveMovie(m){
+  if(editing){
+    data[data.findIndex(x => x.id === editing)] = m;
+  }else{
+    data.unshift(m);
+  }
+  saveCatalog();
+  cancelMovie();
+  render();
+}
+
+function editMovie(id){
+  const m = data.find(x => x.id === id);
+  if(!m) return;
+  editing = id;
+  title.value = m.title || "";
+  year.value = m.year || "";
+  actor.value = m.actor || "";
+  actress.value = m.actress || "";
+  director.value = m.director || "";
+  genre.value = m.genre || "";
+  coverUrl.value = m.cover || "";
+  trailerUrl.value = m.trailer || "";
+  overview.value = m.overview || "";
+  tmdbDraft = {runtime:m.runtime || "", vote:m.vote || "", tmdbId:m.tmdbId || ""};
+}
+
+function cancelMovie(){editing = null; tmdbDraft = {}; form.reset(); updateFileLabel()}
+function deleteMovie(id){
+  if(!confirm(t("confirmDeleteMovie"))) return;
+  data = data.filter(x => x.id !== id);
+  saveCatalog();
+  render();
+}
+
+function openModal(id){document.getElementById(id).classList.add("open")}
+function closeModal(id){document.getElementById(id).classList.remove("open")}
+
+function openProfiles(){
+  renderProfiles();
+  openModal("profilesModal");
+}
+
+function renderProfiles(){
+  profileList.innerHTML = users.map(u => `
+    <div class="profile-card ${u.id === currentUserId ? "active" : ""}" onclick="switchProfile('${u.id}')">
+      <div class="avatar">${escapeHtml(u.avatar || u.name[0])}</div>
+      <strong>${escapeHtml(u.name)}</strong>
+      <div class="small">${t("clickEnter")}</div>
+      <button class="secondary" onclick="event.stopPropagation();editProfile('${u.id}')">${t("edit")}</button>
+    </div>
+  `).join("");
+}
+
+function switchProfile(id){
+  currentUserId = id;
+  localStorage.setItem(CURRENT_USER_KEY,currentUserId);
+  loadCatalog();
+  cancelMovie();
+  render();
+  renderProfiles();
+}
+
+function editProfile(id){
+  const u = users.find(x => x.id === id);
+  if(!u) return;
+  profileFormTitle.textContent = t("editProfile");
+  profileId.value = u.id;
+  profileName.value = u.name;
+  profileAvatar.value = u.avatar;
+}
+
+function resetProfileForm(){
+  profileFormTitle.textContent = t("addProfile");
+  profileId.value = "";
+  profileName.value = "";
+  profileAvatar.value = "";
+}
+
+function saveProfile(){
+  const name = profileName.value.trim();
+  if(!name) return alert(t("writeName"));
+  const avatar = (profileAvatar.value.trim() || name[0]).slice(0,2).toUpperCase();
+
+  if(profileId.value){
+    const u = users.find(x => x.id === profileId.value);
+    u.name = name;
+    u.avatar = avatar;
+  }else{
+    const u = {id:Date.now().toString(),name,avatar};
+    users.push(u);
+    currentUserId = u.id;
+  }
+
+  saveUsers();
+  updateCurrentUser();
+  loadCatalog();
+  resetProfileForm();
+  renderProfiles();
+  render();
+}
+
+function deleteProfile(){
+  const id = profileId.value;
+  if(!id) return alert(t("chooseProfile"));
+  if(users.length === 1) return alert(t("keepOne"));
+  if(!confirm(t("confirmDeleteProfile"))) return;
+
+  users = users.filter(u => u.id !== id);
+  localStorage.removeItem(`vc_movies_${id}`);
+  if(currentUserId === id) currentUserId = users[0].id;
+  saveUsers();
+  updateCurrentUser();
+  loadCatalog();
+  resetProfileForm();
+  renderProfiles();
+  render();
+}
+
+function openSettings(){
+  settingsTmdbKey.value = settings.tmdbKey || "";
+  settingsOpenRouterKey.value = settings.openRouterKey || "";
+  settingsOpenRouterModel.value = settings.openRouterModel || "openrouter/auto";
+  openModal("settingsModal");
+}
+
+function saveSettings(){
+  settings = {
+    tmdbKey: settingsTmdbKey.value.trim(),
+    openRouterKey: settingsOpenRouterKey.value.trim(),
+    openRouterModel: settingsOpenRouterModel.value.trim() || "openrouter/auto"
+  };
+  localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));
+  closeModal("settingsModal");
+}
+
+search.oninput = render;
+filter.onchange = render;
+
+tmdbSearch.oninput = () => {
+  clearTimeout(tmdbTimer);
+  const q = tmdbSearch.value.trim();
+  if(q.length < 3){tmdbResults.innerHTML = ""; return}
+  tmdbTimer = setTimeout(() => searchTMDB(q),350);
+};
+
+async function searchTMDB(q){
+  if(!settings.tmdbKey){tmdbResults.innerHTML = t("noTmdbKey"); return}
+  tmdbResults.innerHTML = t("searching");
+  try{
+    const r = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${settings.tmdbKey}&query=${encodeURIComponent(q)}&language=es-ES`);
+    const d = await r.json();
+    tmdbResults.innerHTML = (d.results || []).slice(0,5).map(m => `
+      <div onclick="loadTMDB(${m.id})" class="tmdb-result">
+        <img src="${m.poster_path ? `https://image.tmdb.org/t/p/w92${m.poster_path}` : EMPTY_POSTER}" alt="${escapeHtml(m.title)}">
+        <div>
+          <div class="tmdb-title">${escapeHtml(m.title)}</div>
+          <div class="tmdb-meta">${m.release_date ? escapeHtml(m.release_date.slice(0,4)) : t("noYear")} · ${m.vote_average ? escapeHtml(m.vote_average.toFixed(1)) + "/10" : t("noRating")}</div>
+          <div class="tmdb-meta">${escapeHtml((m.overview || t("noOverview")).slice(0,90))}${m.overview && m.overview.length > 90 ? "..." : ""}</div>
+        </div>
+      </div>
+    `).join("");
+  }catch(e){
+    tmdbResults.innerHTML = t("tmdbError");
+  }
+}
+
+async function loadTMDB(id){
+  if(!settings.tmdbKey) return;
+  try{
+    const r = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${settings.tmdbKey}&append_to_response=credits,videos&language=es-ES`);
+    const m = await r.json();
+    const trailer = findTrailer(m.videos?.results || []);
+    title.value = m.title || "";
+    year.value = m.release_date?.slice(0,4) || "";
+    genre.value = (m.genres || []).map(g => g.name).join(", ");
+    coverUrl.value = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : "";
+    trailerUrl.value = trailer;
+    overview.value = m.overview || "";
+    const cast = m.credits?.cast || [];
+    actor.value = cast[0]?.name || "";
+    actress.value = cast.find(c => c.gender === 1)?.name || "";
+    director.value = m.credits?.crew?.find(c => c.job === "Director")?.name || "";
+    tmdbDraft = {
+      tmdbId: m.id || "",
+      runtime: m.runtime || "",
+      vote: m.vote_average ? m.vote_average.toFixed(1) : ""
+    };
+    tmdbResults.innerHTML = "";
+  }catch(e){
+    tmdbResults.innerHTML = t("tmdbLoadError");
+  }
+}
+
+function findTrailer(videos){
+  const trailer = videos.find(v => v.site === "YouTube" && v.type === "Trailer") ||
+    videos.find(v => v.site === "YouTube" && v.type === "Teaser") ||
+    videos.find(v => v.site === "YouTube");
+
+  return trailer ? `https://www.youtube.com/watch?v=${trailer.key}` : "";
+}
+
+function toggleChat(){chat.style.display = chat.style.display === "flex" ? "none" : "flex"}
+
+function cleanChatText(text){
+  return String(text || "")
+    .replace(/\*\*(.*?)\*\*/g,"$1")
+    .replace(/^\s*[-*]\s+/gm,"")
+    .trim();
+}
+
+async function sendChat(){
+  const q = chatInput.value.trim();
+  if(!q) return;
+  chatBody.innerHTML += `<div class="msg-user">${escapeHtml(q)}</div>`;
+  chatInput.value = "";
+
+  try{
+    const catalog = data.slice(0,80).map(m => `${m.title} (${m.year || t("noYearCatalog")})`).join(", ");
+    const r = await fetch("/api/legaamaar",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:settings.openRouterModel || "openrouter/auto",
+        openRouterKey:settings.openRouterKey || "",
+        messages:[
+          {role:"system",content:`Eres el conserje de un videoclub selecto llamado Le Gamaar Cinema. Responde en ${currentLang === "ca" ? "catalán" : currentLang === "en" ? "inglés" : "español"}. Sé breve, cálido y con criterio. Máximo 5 líneas. No uses markdown, asteriscos, listas largas ni títulos en negrita. Si recomiendas películas, da como máximo 3 y explica en una frase por qué.`},
+          {role:"user",content:`${t("userLabel")}: ${currentUser().name}. ${t("catalogLabel")}: ${catalog || "vacío"}. Pregunta: ${q}`}
+        ]
+      })
+    });
+    const d = await r.json();
+    if(!r.ok){
+      throw new Error(d.error?.message || d.message || `HTTP ${r.status}`);
+    }
+    chatBody.innerHTML += `<div class="msg-ai">${escapeHtml(cleanChatText(d.choices?.[0]?.message?.content || t("noResponse")))}</div>`;
+  }catch(e){
+    chatBody.innerHTML += `<div class="msg-ai">${t("openRouterError")} ${escapeHtml(e.message || "")}</div>`;
+  }
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function init(){
+  if(!users.find(u => u.id === currentUserId)) currentUserId = users[0].id;
+  applyLanguage();
+  updateCurrentUser();
+  loadCatalog();
+  render();
+}
+
+init();
+</script>
+
+</body>
+</html>
