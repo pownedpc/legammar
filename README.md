@@ -31,6 +31,23 @@ OPENROUTER_API_KEY=tu_clave_de_openrouter
 
 7. Deploy.
 
+## Abrir en local
+
+Puedes abrir `index.html` directamente en el navegador para probar la interfaz, pero el chatbot no funcionará desde `file://` porque necesita la ruta serverless `/api/legaamaar`.
+
+Para probarlo completo en local:
+
+```bash
+npm install -g vercel
+vercel dev
+```
+
+Después abre la URL local que muestre Vercel, normalmente:
+
+```text
+http://localhost:3000
+```
+
 ## Ajustes dentro de la app
 
 - La API key de TMDB se puede guardar desde `Ajustes`.
