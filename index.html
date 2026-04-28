@@ -263,7 +263,6 @@ button{padding:10px 13px;border:0;border-radius:8px;cursor:pointer;font-weight:8
     </div>
     <div class="section">
       <h3 id="apisTitle">APIs</h3>
-      <input id="settingsTmdbKey" placeholder="API key de TMDB">
       <input id="settingsOpenRouterKey" type="password" placeholder="Routercode / API key de OpenRouter">
       <input id="settingsOpenRouterModel" placeholder="Modelo OpenRouter" value="openrouter/auto">
       <button class="primary" id="saveSettingsBtn" onclick="saveSettings()">Guardar ajustes</button>
@@ -452,7 +451,6 @@ function applyLanguage() {
   setPlaceholder("trailerUrl","trailer");
   setPlaceholder("overview","overview");
   setPlaceholder("chatInput","chat");
-  setPlaceholder("settingsTmdbKey","tmdbKey");
   setPlaceholder("settingsOpenRouterKey","routerKey");
   setPlaceholder("settingsOpenRouterModel","model");
   setText("settingsBtn","settings");
@@ -563,7 +561,6 @@ function openModal(id) { document.getElementById(id).classList.add("open"); }
 function closeModal(id) { document.getElementById(id).classList.remove("open"); }
 
 function openSettings() {
-  settingsTmdbKey.value = settings.tmdbKey || "";
   settingsOpenRouterKey.value = settings.openRouterKey || "";
   settingsOpenRouterModel.value = settings.openRouterModel || "openrouter/auto";
   openModal("settingsModal");
@@ -571,7 +568,6 @@ function openSettings() {
 
 function saveSettings() {
   settings = {
-    tmdbKey: settingsTmdbKey.value.trim(),
     openRouterKey: settingsOpenRouterKey.value.trim(),
     openRouterModel: settingsOpenRouterModel.value.trim() || "openrouter/auto"
   };
@@ -590,10 +586,9 @@ tmdbSearch.oninput = () => {
 };
 
 async function searchTMDB(q) {
-  if (!settings.tmdbKey) { tmdbResults.innerHTML = t("noTmdbKey"); return; }
   tmdbResults.innerHTML = t("searching");
   try {
-    const r = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${settings.tmdbKey}&query=${encodeURIComponent(q)}&language=es-ES`);
+    const r = await fetch(`/api/tmdb?path=search/movie&query=${encodeURIComponent(q)}&language=es-ES`);
     const d = await r.json();
     tmdbResults.innerHTML = (d.results || []).slice(0, 5).map(m => `
       <div onclick="loadTMDB(${m.id})" class="tmdb-result">
@@ -609,9 +604,8 @@ async function searchTMDB(q) {
 }
 
 async function loadTMDB(id) {
-  if (!settings.tmdbKey) return;
   try {
-    const r = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${settings.tmdbKey}&append_to_response=credits,videos&language=es-ES`);
+    const r = await fetch(`/api/tmdb?path=movie/${id}&append_to_response=credits,videos&language=es-ES`);
     const m = await r.json();
     const trailer = findTrailer(m.videos?.results || []);
     title.value = m.title || ""; year.value = m.release_date?.slice(0,4) || "";
