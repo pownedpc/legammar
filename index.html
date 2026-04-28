@@ -1,176 +1,163 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Le Gamaar Cinema</title>
+<title>Le Gamaar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
 *{box-sizing:border-box}
 :root{
-  --gold:#9b7835;
-  --gold-2:#6f5424;
-  --gold-light:#c7a15a;
-  --gold-soft:rgba(155,120,53,.18);
+  --gold:#9b7835;--gold-2:#6f5424;--gold-light:#c7a15a;--gold-soft:rgba(155,120,53,.18);
+  --bg:#0f1015;--surface-1:rgba(30,30,37,.86);--surface-2:rgba(18,18,24,.92);
+  --border:rgba(226,191,116,.18);--text:#f3ece0;--muted:#bdb3a4;--dim:#897f70;
 }
 body{
-  margin:0;
-  min-height:100vh;
-  background:
-    linear-gradient(180deg,rgba(9,10,14,.72),#0f1015 340px),
+  margin:0;min-height:100vh;
+  background:linear-gradient(180deg,rgba(9,10,14,.72),#0f1015 340px),
     radial-gradient(circle at 14% 0%,rgba(137,24,42,.32),transparent 36rem),
-    radial-gradient(circle at 86% 8%,rgba(204,159,79,.14),transparent 32rem),
-    #0f1015;
-  color:#f3ece0;
-  font-family:"Manrope",Arial,sans-serif;
+    radial-gradient(circle at 86% 8%,rgba(204,159,79,.14),transparent 32rem),#0f1015;
+  color:var(--text);font-family:"Manrope",Arial,sans-serif;font-size:14px;
 }
 body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
+  content:"";position:fixed;inset:0;pointer-events:none;
   background:linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px);
-  background-size:64px 64px;
-  opacity:.28;
-  mask-image:linear-gradient(to bottom,#000,transparent 58%);
+  background-size:64px 64px;opacity:.28;mask-image:linear-gradient(to bottom,#000,transparent 58%);
 }
 
-/* ── AUTH OVERLAY ── */
-#authOverlay{
-  position:fixed;inset:0;z-index:100;
-  display:flex;align-items:center;justify-content:center;padding:20px;
-  background:rgba(8,9,13,.9);backdrop-filter:blur(6px);
-}
-.auth-card{
-  width:min(420px,100%);
-  background:linear-gradient(160deg,rgba(30,30,38,.98),rgba(18,18,25,.99));
-  border:1px solid rgba(226,191,116,.18);border-radius:14px;
-  padding:32px 28px;box-shadow:0 32px 90px rgba(0,0,0,.65);
-}
+/* ── AUTH ── */
+#authOverlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(8,9,13,.9);backdrop-filter:blur(6px)}
+.auth-card{width:min(420px,100%);background:linear-gradient(160deg,var(--surface-1),var(--surface-2));border:1px solid var(--border);border-radius:14px;padding:32px 28px;box-shadow:0 32px 90px rgba(0,0,0,.65)}
 .auth-logo{margin:0 0 4px;color:var(--gold-light);font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:700}
 .auth-logo::after{content:"";display:block;width:36px;height:1px;background:var(--gold);margin-top:4px}
-.auth-subtitle{color:#897f70;font-size:12px;margin:6px 0 20px}
+.auth-subtitle{color:var(--dim);font-size:12px;margin:6px 0 20px}
 .tabs{display:flex;gap:6px;margin-bottom:18px}
-.tab-btn{flex:1;padding:9px;border:1px solid rgba(226,191,116,.2);border-radius:8px;background:transparent;color:#bdb3a4;font:700 11px/1 "Manrope",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.tab-btn{flex:1;padding:9px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font:700 11px/1 "Manrope",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s}
 .tab-btn.active{background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;border-color:transparent}
 .auth-error{color:#ff9a9a;font-size:12px;margin:8px 0 0;min-height:16px}
 .btn-auth{width:100%;padding:11px;border:0;border-radius:8px;cursor:pointer;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;font:800 11px/1 "Manrope",Arial,sans-serif;letter-spacing:.09em;text-transform:uppercase;margin-top:4px;transition:opacity .15s}
-.btn-auth:hover{opacity:.88}
-.btn-auth:disabled{opacity:.5;cursor:not-allowed}
-.auth-link{text-align:center;margin-top:14px;color:#7a7060;font-size:12px}
-.auth-link a{color:var(--gold-light);cursor:pointer;text-decoration:underline}
+.btn-auth:hover{opacity:.88}.btn-auth:disabled{opacity:.5;cursor:not-allowed}
 
-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  display:flex;
-  align-items:center;
-  gap:18px;
-  padding:16px 28px;
-  background:rgba(12,13,17,.78);
-  border-bottom:1px solid rgba(226,191,116,.22);
-  backdrop-filter:blur(18px);
-}
-h1{
-  margin:0;
-  color:#c7a15a;
-  font-family:"Cormorant Garamond",Georgia,serif;
-  font-size:32px;
-  font-weight:700;
-  letter-spacing:.03em;
-  white-space:nowrap;
-}
-h1::after{content:"";display:block;width:42px;height:1px;background:var(--gold);margin-top:3px}
-.top-search{max-width:380px;margin:0 0 0 auto}
-.header-actions{display:flex;align-items:center;gap:10px}
-.language-select{width:auto;min-width:132px;margin:0;background:rgba(255,255,255,.055);border-color:rgba(226,191,116,.2)}
-.user-pill{display:flex;align-items:center;gap:9px;padding:7px 11px;background:rgba(255,255,255,.055);border:1px solid rgba(226,191,116,.2);border-radius:999px}
-.avatar{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;font-weight:800}
-.container{display:grid;grid-template-columns:350px 1fr;gap:30px;max-width:1460px;margin:0 auto;padding:30px}
-.panel{
-  background:linear-gradient(180deg,rgba(30,30,37,.86),rgba(18,18,24,.92));
-  border:1px solid rgba(226,191,116,.18);
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 24px 70px rgba(0,0,0,.34);
-}
-.panel-title{margin:0 0 16px;color:#c7a15a;font-family:"Cormorant Garamond",Georgia,serif;font-size:28px;font-weight:600}
-input,select{
-  width:100%;
-  margin-bottom:11px;
-  padding:12px 13px;
-  background:rgba(7,8,12,.74);
-  color:#fff8ed;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:8px;
-  outline:none;
-  font:500 13px/1.2 "Manrope",Arial,sans-serif;
-}
-input::placeholder{color:#897f70}
+/* ── HEADER ── */
+header{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:14px 26px;background:rgba(12,13,17,.82);border-bottom:1px solid var(--border);backdrop-filter:blur(18px)}
+.logo{margin:0;color:var(--gold-light);font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:700;letter-spacing:.03em;white-space:nowrap}
+.logo::after{content:"";display:block;width:38px;height:1px;background:var(--gold);margin-top:2px}
+.view-tabs{display:flex;gap:4px;padding:4px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px}
+.view-tab{padding:7px 16px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:700 10px/1 "Manrope",Arial,sans-serif;letter-spacing:.09em;text-transform:uppercase;cursor:pointer;transition:all .15s;white-space:nowrap}
+.view-tab.active{background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014}
+.header-right{display:flex;align-items:center;gap:9px;margin-left:auto}
+.user-pill{display:flex;align-items:center;gap:8px;padding:6px 11px;background:rgba(255,255,255,.055);border:1px solid var(--border);border-radius:999px}
+.avatar{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;font:800 12px/1 "Manrope",Arial,sans-serif;flex:none}
+
+/* ── SHARED INPUTS / BUTTONS ── */
+input,select{width:100%;margin-bottom:11px;padding:11px 13px;background:rgba(7,8,12,.74);color:#fff8ed;border:1px solid rgba(255,255,255,.12);border-radius:8px;outline:none;font:500 13px/1.2 "Manrope",Arial,sans-serif}
+input::placeholder{color:var(--dim)}
 input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
-button{padding:10px 13px;border:0;border-radius:8px;cursor:pointer;font-weight:800;font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-family:"Manrope",Arial,sans-serif}
-.primary{background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014}
-.secondary{background:rgba(255,255,255,.07);color:#e2d7c6;border:1px solid rgba(255,255,255,.12)}
-.danger{background:#5c2529;color:#ffd7d7}
-.button-row{display:flex;gap:8px}.button-row button{flex:1}
-#filter{max-width:220px;margin-bottom:18px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:18px}
-.card{
-  position:relative;
-  background:#171820;
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:10px;
-  overflow:hidden;
-  box-shadow:0 18px 50px rgba(0,0,0,.36);
-  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
-}
-.card:hover{transform:translateY(-5px);border-color:rgba(155,120,53,.55);box-shadow:0 28px 70px rgba(0,0,0,.5)}
-.card img{width:100%;height:215px;object-fit:cover;background:#0b0b0f;display:block}
-.card-body{padding:10px 12px}
-.card b{display:block;margin-bottom:5px;color:#fff2d2;font-family:"Cormorant Garamond",Georgia,serif;font-size:21px;font-weight:700;line-height:1}
-.small{font-size:11px;color:#bdb3a4;line-height:1.32}
-.actions{display:flex;gap:7px;margin-top:9px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}.actions button{flex:1;background:rgba(255,255,255,.065);color:#ddd;padding:7px 8px;font-size:9px}
-.empty{text-align:center;padding:52px;border:1px dashed rgba(226,191,116,.3);background:rgba(255,255,255,.03);border-radius:10px;grid-column:1/-1;color:#c8bda9}
+button{padding:10px 13px;border:0;border-radius:8px;cursor:pointer;font:800 10px/1 "Manrope",Arial,sans-serif;letter-spacing:.09em;text-transform:uppercase}
+.btn-primary{background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014}
+.btn-secondary{background:rgba(255,255,255,.07);color:#e2d7c6;border:1px solid rgba(255,255,255,.12)}
+.btn-sm{padding:7px 12px}
+.btn-row{display:flex;gap:8px}.btn-row button{flex:1}
+
+/* ── CATALOG VIEW ── */
+.catalog-layout{display:grid;grid-template-columns:340px 1fr;gap:26px;max-width:1460px;margin:0 auto;padding:26px}
+.panel{background:linear-gradient(180deg,var(--surface-1),var(--surface-2));border:1px solid var(--border);padding:20px;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.34)}
+.panel-title{margin:0 0 16px;color:var(--gold-light);font-family:"Cormorant Garamond",Georgia,serif;font-size:26px;font-weight:600}
 .tmdb-result{display:flex;gap:10px;align-items:center;padding:8px;border-bottom:1px solid #2c2d35;cursor:pointer;color:#e8ddc8}.tmdb-result:hover{background:#272319}
 .tmdb-result img{width:42px;height:62px;object-fit:cover;background:#0b0b0f;border-radius:4px;flex:none}
-.tmdb-title{font-weight:800;color:#fff1cf}.tmdb-meta{font-size:12px;color:#b8b1a8;margin-top:3px}
-.overview{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:6px}
-.trailer-link{display:block;margin-top:7px;padding:7px 8px;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;text-align:center;text-decoration:none;border-radius:6px;font-weight:800;font-size:9px;text-transform:uppercase}
-.file-picker{margin-bottom:11px}
+.tmdb-title{font-weight:800;color:#fff1cf}.tmdb-meta{font-size:11px;color:var(--muted);margin-top:3px}
 .file-picker input{display:none}
-.file-picker label{display:flex;align-items:center;justify-content:center;min-height:42px;padding:10px 12px;background:rgba(255,255,255,.045);border:1px solid rgba(155,120,53,.35);border-radius:8px;color:#cfc4b2;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
-.file-picker label:hover{background:rgba(155,120,53,.12);color:#e5d2aa}
-.chat-btn{position:fixed;right:22px;bottom:22px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;box-shadow:0 14px 38px rgba(0,0,0,.48)}
-.chat-box{position:fixed;right:22px;bottom:90px;width:350px;height:460px;background:#171820;border:1px solid rgba(226,191,116,.25);border-radius:10px;display:none;flex-direction:column;overflow:hidden;box-shadow:0 22px 65px rgba(0,0,0,.58)}
+.file-picker label{display:flex;align-items:center;justify-content:center;min-height:42px;padding:10px 12px;background:rgba(255,255,255,.045);border:1px solid rgba(155,120,53,.35);border-radius:8px;color:#cfc4b2;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;margin-bottom:11px}
+.file-picker label:hover{background:var(--gold-soft);color:#e5d2aa}
+#catalogFilter{max-width:200px;margin-bottom:16px}
+.catalog-search{width:100%;margin-bottom:16px;padding:10px 13px;background:rgba(7,8,12,.74);color:#fff8ed;border:1px solid rgba(255,255,255,.12);border-radius:8px;outline:none;font:500 13px/1.2 "Manrope",Arial,sans-serif}
+.catalog-search::placeholder{color:var(--dim)}
+.catalog-search:focus{border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.movie-card{background:#171820;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.36);transition:transform .18s,border-color .18s,box-shadow .18s}
+.movie-card:hover{transform:translateY(-5px);border-color:rgba(155,120,53,.55);box-shadow:0 28px 70px rgba(0,0,0,.5)}
+.movie-card img{width:100%;height:210px;object-fit:cover;background:#0b0b0f;display:block}
+.movie-card-body{padding:10px 12px}
+.movie-card b{display:block;margin-bottom:4px;color:#fff2d2;font-family:"Cormorant Garamond",Georgia,serif;font-size:20px;font-weight:700;line-height:1}
+.small{font-size:11px;color:var(--muted);line-height:1.32}
+.overview-clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:4px}
+.card-actions{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}
+.card-actions button{flex:1;background:rgba(255,255,255,.065);color:#ddd;padding:6px 8px;font-size:9px}
+.trailer-link{display:block;margin-top:7px;padding:6px 8px;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;text-align:center;text-decoration:none;border-radius:6px;font:800 9px/1 "Manrope",Arial,sans-serif;text-transform:uppercase}
+.catalog-empty{text-align:center;padding:52px;border:1px dashed rgba(226,191,116,.3);background:rgba(255,255,255,.03);border-radius:10px;grid-column:1/-1;color:#c8bda9}
+
+/* ── NEWS VIEW ── */
+.news-layout{display:grid;grid-template-columns:1fr 300px;gap:22px;max-width:1400px;margin:0 auto;padding:26px;align-items:start}
+.news-search-card{background:linear-gradient(180deg,var(--surface-1),var(--surface-2));border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 24px 70px rgba(0,0,0,.34);margin-bottom:18px}
+.news-search-card h2{margin:0 0 12px;color:var(--gold-light);font-family:"Cormorant Garamond",Georgia,serif;font-size:24px;font-weight:600}
+.search-row{display:flex;gap:10px}
+.search-row input{flex:1;margin:0}
+.search-row button{padding:11px 18px;border:0;border-radius:8px;cursor:pointer;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;font:800 10px/1 "Manrope",Arial,sans-serif;letter-spacing:.09em;text-transform:uppercase;white-space:nowrap}
+.search-row button:disabled{opacity:.5;cursor:not-allowed}
+.summary-box{background:rgba(155,120,53,.1);border:1px solid rgba(155,120,53,.3);border-radius:10px;padding:15px 17px;margin-bottom:16px;display:none}
+.summary-box h3{margin:0 0 7px;color:var(--gold-light);font-family:"Cormorant Garamond",Georgia,serif;font-size:19px;font-weight:600}
+.summary-box p{margin:0;color:var(--text);line-height:1.6;font-size:13px}
+.article-card{background:rgba(20,21,28,.88);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:13px 15px;margin-bottom:11px;transition:border-color .15s}
+.article-card:hover{border-color:rgba(155,120,53,.4)}
+.article-source{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.article-title{font-family:"Cormorant Garamond",Georgia,serif;font-size:18px;font-weight:600;color:#fff2d2;line-height:1.25;margin-bottom:5px}
+.article-desc{color:var(--muted);font-size:12px;line-height:1.5;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.article-meta{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.article-date{color:#7a7060;font-size:11px}
+.article-link{padding:5px 9px;border-radius:5px;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;font:800 9px/1 "Manrope",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.news-loading{display:none;text-align:center;padding:28px;color:var(--muted)}
+.spinner{display:inline-block;width:24px;height:24px;border:2px solid rgba(199,161,90,.2);border-top-color:var(--gold-light);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.news-empty{text-align:center;padding:36px;color:var(--muted);font-size:13px}
+.history-panel{background:linear-gradient(180deg,var(--surface-1),var(--surface-2));border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:0 24px 70px rgba(0,0,0,.34);position:sticky;top:74px;max-height:calc(100vh - 90px);overflow-y:auto}
+.history-panel h2{margin:0 0 12px;color:var(--gold-light);font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;font-weight:600}
+.history-item{padding:10px 12px;border:1px solid rgba(255,255,255,.07);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:border-color .15s,background .15s}
+.history-item:hover{border-color:rgba(155,120,53,.35);background:rgba(155,120,53,.06)}
+.history-item.active{border-color:var(--gold);background:var(--gold-soft)}
+.history-topic{font-weight:700;color:#fff2d2;font-size:13px;margin-bottom:2px}
+.history-date{font-size:10px;color:#7a7060}
+.history-summary{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.history-empty{text-align:center;padding:20px;color:var(--muted);font-size:12px}
+
+/* ── CHAT ── */
+.chat-btn{position:fixed;right:22px;bottom:22px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014;box-shadow:0 14px 38px rgba(0,0,0,.48);font-size:13px}
+.chat-box{position:fixed;right:22px;bottom:82px;width:340px;height:450px;background:#171820;border:1px solid rgba(226,191,116,.25);border-radius:10px;display:none;flex-direction:column;overflow:hidden;box-shadow:0 22px 65px rgba(0,0,0,.58)}
 .chat-body{flex:1;overflow:auto;padding:14px;font-size:13px;display:flex;flex-direction:column;gap:10px}
 .msg-user,.msg-ai{max-width:88%;padding:10px 12px;border-radius:10px;line-height:1.45;white-space:pre-wrap;word-break:break-word}
 .msg-user{align-self:flex-end;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#121217}
-.msg-ai{align-self:flex-start;background:rgba(255,255,255,.075);color:#f3ece0;border:1px solid rgba(255,255,255,.08)}
+.msg-ai{align-self:flex-start;background:rgba(255,255,255,.075);color:var(--text);border:1px solid rgba(255,255,255,.08)}
+
+/* ── MODAL ── */
 .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.72)}
-.modal.open{display:flex}.modal-card{width:min(640px,100%);max-height:90vh;overflow:auto;background:#171820;border:1px solid rgba(226,191,116,.24);border-radius:12px;padding:20px;box-shadow:0 24px 70px rgba(0,0,0,.6)}
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.modal-head h2{margin:0;color:#c7a15a;font-family:"Cormorant Garamond",Georgia,serif;font-size:30px;font-weight:600}
-.section{padding:15px;border:1px solid rgba(255,255,255,.11);border-radius:10px;margin-bottom:14px}
-.section h3{margin:0 0 10px;color:#f0ddb4;font-size:15px}
-.nav-link{display:flex;align-items:center;gap:7px;padding:7px 12px;background:rgba(255,255,255,.055);border:1px solid rgba(226,191,116,.2);border-radius:8px;color:#e2d7c6;font:700 10px/1 "Manrope",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer}
-.nav-link:hover{background:rgba(255,255,255,.1)}
-@media (max-width:800px){header{flex-wrap:wrap;padding:14px}.top-search{order:3;max-width:none;flex-basis:100%}.container{grid-template-columns:1fr;padding:14px}.grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}.card img{height:205px}h1{font-size:28px}}
+.modal.open{display:flex}
+.modal-card{width:min(600px,100%);max-height:90vh;overflow:auto;background:#171820;border:1px solid rgba(226,191,116,.24);border-radius:12px;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.modal-head h2{margin:0;color:var(--gold-light);font-family:"Cormorant Garamond",Georgia,serif;font-size:28px;font-weight:600}
+.modal-section{padding:14px;border:1px solid rgba(255,255,255,.1);border-radius:10px;margin-bottom:12px}
+.modal-section h3{margin:0 0 10px;color:#f0ddb4;font-size:14px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:860px){
+  header{flex-wrap:wrap;padding:12px 16px;gap:10px}
+  .catalog-layout,.news-layout{grid-template-columns:1fr;padding:14px}
+  .history-panel{position:static;max-height:none}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .movie-card img{height:190px}
+}
 </style>
 </head>
-
 <body>
 
 <!-- ── AUTH OVERLAY ── -->
 <div id="authOverlay">
   <div class="auth-card">
-    <h1 class="auth-logo">Le Gamaar Cinema</h1>
-    <p class="auth-subtitle">Inicia sessió per accedir al teu catàleg</p>
+    <h1 class="auth-logo">Le Gamaar</h1>
+    <p class="auth-subtitle">Inicia sessió per accedir al teu catàleg i notícies</p>
     <div class="tabs">
-      <button class="tab-btn active" id="tabLogin" onclick="showTab('login')">Entrar</button>
-      <button class="tab-btn" id="tabSignup" onclick="showTab('signup')">Registrar-se</button>
+      <button class="tab-btn active" id="tabLogin" onclick="showAuthTab('login')">Entrar</button>
+      <button class="tab-btn" id="tabSignup" onclick="showAuthTab('signup')">Registrar-se</button>
     </div>
     <div id="loginTab">
       <input type="email" id="loginEmail" placeholder="Email">
@@ -185,99 +172,143 @@ button{padding:10px 13px;border:0;border-radius:8px;cursor:pointer;font-weight:8
       <button class="btn-auth" id="signupBtn" onclick="doSignup()">Crear compte</button>
       <p class="auth-error" id="signupError"></p>
     </div>
-    <p class="auth-link">Notícies amb IA → <a href="/news.html">Le Gamaar Notícies</a></p>
   </div>
 </div>
 
+<!-- ── HEADER ── -->
 <header>
-<h1>Le Gamaar Cinema</h1>
-<input class="top-search" id="search" placeholder="Buscar en la colección...">
-<div class="header-actions">
-  <select class="language-select" id="languageSelect" onchange="changeLanguage(this.value)">
-    <option value="ca">Català</option>
-    <option value="es">Castellano</option>
-    <option value="en">English</option>
-  </select>
-  <a class="nav-link" href="/news.html">Notícies</a>
-  <button class="secondary" id="settingsBtn" onclick="openSettings()">Ajustes</button>
-  <button class="secondary" onclick="doLogout()">Sortir</button>
-  <div class="user-pill">
-    <div class="avatar" id="currentAvatar">U</div>
-    <span id="currentUserName">Usuari</span>
+  <h1 class="logo">Le Gamaar</h1>
+  <div class="view-tabs">
+    <button class="view-tab active" id="btnCatalog" onclick="showView('catalog')">Cinema</button>
+    <button class="view-tab" id="btnNews" onclick="showView('news')">Notícies</button>
   </div>
-</div>
+  <div class="header-right">
+    <select id="languageSelect" style="width:auto;min-width:120px;margin:0;background:rgba(255,255,255,.055);border-color:rgba(226,191,116,.2)" onchange="changeLanguage(this.value)">
+      <option value="ca">Català</option>
+      <option value="es">Castellano</option>
+      <option value="en">English</option>
+    </select>
+    <button class="btn-secondary btn-sm" onclick="openSettings()">Ajustos</button>
+    <button class="btn-secondary btn-sm" onclick="doLogout()">Sortir</button>
+    <div class="user-pill">
+      <div class="avatar" id="currentAvatar">U</div>
+      <span id="currentUserName">Usuari</span>
+    </div>
+  </div>
 </header>
 
-<div class="container">
-<div class="panel">
-<h2 class="panel-title" id="curationTitle">Añadir película</h2>
-<input id="tmdbSearch" placeholder="Buscar título en TMDB...">
-<div id="tmdbResults"></div>
+<!-- ══════════════ CATALOG VIEW ══════════════ -->
+<div id="catalogView">
+  <div class="catalog-layout">
 
-<form id="form">
-<input type="hidden" id="id">
-<input id="title" placeholder="Título" required>
-<input id="year" placeholder="Año" required>
-<input id="actor" placeholder="Actor principal">
-<input id="actress" placeholder="Actriz principal">
-<input id="director" placeholder="Director">
-<input id="genre" placeholder="Género">
-<input id="coverUrl" placeholder="URL portada">
-<input id="trailerUrl" placeholder="URL trailer">
-<input id="overview" placeholder="Sinopsis">
-<div class="file-picker">
-  <input type="file" id="file" accept="image/*" onchange="updateFileLabel()">
-  <label for="file" id="fileLabel">Seleccionar carátula</label>
-</div>
-<div class="button-row">
-  <button class="primary" id="addMovieBtn">Añadir</button>
-  <button type="button" class="secondary" id="cancelMovieBtn" onclick="cancelMovie()">Cancelar</button>
-</div>
-</form>
+    <div class="panel">
+      <h2 class="panel-title" id="curationTitle">Afegir pel·lícula</h2>
+      <input id="tmdbSearch" placeholder="Cerca a TMDB...">
+      <div id="tmdbResults"></div>
+      <form id="movieForm">
+        <input type="hidden" id="movieId">
+        <input id="title" placeholder="Títol" required>
+        <input id="year" placeholder="Any" required>
+        <input id="actor" placeholder="Actor principal">
+        <input id="actress" placeholder="Actriu principal">
+        <input id="director" placeholder="Director">
+        <input id="genre" placeholder="Gènere">
+        <input id="coverUrl" placeholder="URL portada">
+        <input id="trailerUrl" placeholder="URL tràiler">
+        <input id="overview" placeholder="Sinopsi">
+        <div class="file-picker">
+          <input type="file" id="file" accept="image/*" onchange="updateFileLabel()">
+          <label for="file" id="fileLabel">Seleccionar carátula</label>
+        </div>
+        <div class="btn-row">
+          <button class="btn-primary" id="addMovieBtn" type="submit">Afegir</button>
+          <button class="btn-secondary" type="button" onclick="cancelMovie()">Cancel·lar</button>
+        </div>
+      </form>
+    </div>
+
+    <main>
+      <input class="catalog-search" id="catalogSearch" placeholder="Cerca a la col·lecció...">
+      <select id="catalogFilter">
+        <option value="">Tots</option>
+        <option>Acció</option>
+        <option>Drama</option>
+        <option>Comèdia</option>
+        <option>Terror</option>
+      </select>
+      <div class="grid" id="movieGrid"></div>
+    </main>
+
+  </div>
 </div>
 
-<main>
-<select id="filter">
-<option value="">Todos</option>
-<option>Acción</option>
-<option>Drama</option>
-<option>Comedia</option>
-<option>Terror</option>
-</select>
-<div class="grid" id="list"></div>
-</main>
+<!-- ══════════════ NEWS VIEW ══════════════ -->
+<div id="newsView" style="display:none">
+  <div class="news-layout">
+
+    <main>
+      <div class="news-search-card">
+        <h2>Cerca notícies</h2>
+        <div class="search-row">
+          <input type="text" id="newsTopicInput" placeholder="Escriu un tema..." onkeydown="if(event.key==='Enter')doNewsSearch()">
+          <button id="newsSearchBtn" onclick="doNewsSearch()">Cercar</button>
+        </div>
+      </div>
+      <div class="news-loading" id="newsLoading">
+        <div class="spinner"></div>
+        <div>Cercant notícies i generant resum...</div>
+      </div>
+      <div class="summary-box" id="summaryBox">
+        <h3 id="summaryTopic">Resum</h3>
+        <p id="summaryText"></p>
+      </div>
+      <div id="articlesList"></div>
+    </main>
+
+    <aside>
+      <div class="history-panel">
+        <h2>Historial</h2>
+        <div id="historyList"><div class="history-empty">Cap cerca encara</div></div>
+      </div>
+    </aside>
+
+  </div>
 </div>
 
+<!-- ── CHAT ── -->
 <button class="chat-btn" onclick="toggleChat()">AI</button>
 <div class="chat-box" id="chat">
-<div class="chat-body" id="chatBody"></div>
-<input id="chatInput" placeholder="Pregunta..." onkeydown="if(event.key==='Enter')sendChat()">
-<button id="sendChatBtn" onclick="sendChat()">Enviar</button>
+  <div class="chat-body" id="chatBody"></div>
+  <input id="chatInput" placeholder="Pregunta..." style="margin:0;border-radius:0;border-left:0;border-right:0;border-bottom:0" onkeydown="if(event.key==='Enter')sendChat()">
+  <button style="border-radius:0;background:linear-gradient(135deg,var(--gold-light),var(--gold-2));color:#101014" onclick="sendChat()">Enviar</button>
 </div>
 
+<!-- ── SETTINGS MODAL ── -->
 <div class="modal" id="settingsModal">
   <div class="modal-card">
     <div class="modal-head">
-      <h2 id="settingsTitle">Ajustes</h2>
-      <button class="secondary close-btn" onclick="closeModal('settingsModal')">Cerrar</button>
+      <h2>Ajustos</h2>
+      <button class="btn-secondary" onclick="closeModal('settingsModal')">Tancar</button>
     </div>
-    <div class="section">
-      <h3 id="apisTitle">APIs</h3>
-      <input id="settingsOpenRouterKey" type="password" placeholder="Routercode / API key de OpenRouter">
-      <input id="settingsOpenRouterModel" placeholder="Modelo OpenRouter" value="openrouter/auto">
-      <button class="primary" id="saveSettingsBtn" onclick="saveSettings()">Guardar ajustes</button>
+    <div class="modal-section">
+      <h3>Chat AI (OpenRouter)</h3>
+      <input id="settingsOpenRouterKey" type="password" placeholder="API key de OpenRouter">
+      <input id="settingsOpenRouterModel" placeholder="Model OpenRouter" value="openrouter/auto">
+      <button class="btn-primary" onclick="saveSettings()">Guardar</button>
     </div>
-    <div class="small" id="settingsNote">Las claves se guardan solo en este navegador con localStorage.</div>
+    <div class="small" style="color:var(--dim);padding:4px 2px">Les claus es guarden al navegador (localStorage).</div>
   </div>
 </div>
 
 <script>
-// ── AUTH ──
+// ════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════
 const TOKEN_KEY = 'lgn_token';
 let token = localStorage.getItem(TOKEN_KEY);
 let authUser = null;
 
-function showTab(tab) {
+function showAuthTab(tab) {
   const isLogin = tab === 'login';
   document.getElementById('loginTab').style.display = isLogin ? 'block' : 'none';
   document.getElementById('signupTab').style.display = isLogin ? 'none' : 'block';
@@ -287,24 +318,19 @@ function showTab(tab) {
   document.getElementById('signupError').textContent = '';
 }
 
-function showAuthOverlay() {
-  document.getElementById('authOverlay').style.display = 'flex';
-}
-function hideAuthOverlay() {
-  document.getElementById('authOverlay').style.display = 'none';
-}
-
 async function checkAuth() {
-  if (!token) { showAuthOverlay(); return false; }
+  if (!token) { showOverlay(); return false; }
   try {
     const r = await fetch('/api/auth/me', { headers: { Authorization: `Bearer ${token}` } });
-    if (!r.ok) { token = null; localStorage.removeItem(TOKEN_KEY); showAuthOverlay(); return false; }
-    const { user } = await r.json();
-    authUser = user;
-    hideAuthOverlay();
+    if (!r.ok) { token = null; localStorage.removeItem(TOKEN_KEY); showOverlay(); return false; }
+    authUser = (await r.json()).user;
+    hideOverlay();
     return true;
-  } catch { showAuthOverlay(); return false; }
+  } catch { showOverlay(); return false; }
 }
+
+function showOverlay() { document.getElementById('authOverlay').style.display = 'flex'; }
+function hideOverlay() { document.getElementById('authOverlay').style.display = 'none'; }
 
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
@@ -314,16 +340,12 @@ async function doLogin() {
   if (!email || !password) { errEl.textContent = 'Omple tots els camps'; return; }
   btn.disabled = true; btn.textContent = 'Entrant...';
   try {
-    const r = await fetch('/api/auth/login', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    const r = await fetch('/api/auth/login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
     const d = await r.json();
     if (!r.ok) { errEl.textContent = d.error; return; }
     token = d.token; authUser = d.user;
     localStorage.setItem(TOKEN_KEY, token);
-    hideAuthOverlay();
-    applyLanguage(); updateCurrentUser(); loadCatalog(); render();
+    hideOverlay(); afterLogin();
   } catch { errEl.textContent = 'Error de connexió'; }
   finally { btn.disabled = false; btn.textContent = 'Entrar'; }
 }
@@ -337,16 +359,12 @@ async function doSignup() {
   if (!name || !email || !password) { errEl.textContent = 'Omple tots els camps'; return; }
   btn.disabled = true; btn.textContent = 'Creant...';
   try {
-    const r = await fetch('/api/auth/signup', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
-    });
+    const r = await fetch('/api/auth/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({name,email,password}) });
     const d = await r.json();
     if (!r.ok) { errEl.textContent = d.error; return; }
     token = d.token; authUser = d.user;
     localStorage.setItem(TOKEN_KEY, token);
-    hideAuthOverlay();
-    applyLanguage(); updateCurrentUser(); loadCatalog(); render();
+    hideOverlay(); afterLogin();
   } catch { errEl.textContent = 'Error de connexió'; }
   finally { btn.disabled = false; btn.textContent = 'Crear compte'; }
 }
@@ -354,324 +372,380 @@ async function doSignup() {
 function doLogout() {
   token = null; authUser = null;
   localStorage.removeItem(TOKEN_KEY);
-  showAuthOverlay();
+  showOverlay();
 }
 
-// ── APP ──
-const SETTINGS_KEY = "vc_settings";
-const LANG_KEY = "vc_language";
-const EMPTY_POSTER = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDIwMCAzMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMTEiLz48dGV4dCB4PSIxMDAiIHk9IjE1MCIgZmlsbD0iIzY2NiIgZm9udC1zaXplPSIxNCIgZm9udC1mYW1pbHk9IkFyaWFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TaW4gcG9ydGFkYTwvdGV4dD48L3N2Zz4=";
-const LANG = {
-  ca: {
-    search:"Cerca a la col·lecció...", settings:"Ajustos", curation:"Afegir pel·lícula",
-    tmdbSearch:"Cerca un títol a TMDB...", title:"Títol", year:"Any", actor:"Actor principal", actress:"Actriu principal",
-    director:"Director", genre:"Gènere", cover:"URL de la caràtula", trailer:"URL del tràiler", overview:"Sinopsi",
-    add:"Afegir", cancel:"Cancel·lar", all:"Tots", empty:"Cap pel·lícula en el catàleg", edit:"Editar", del:"Esborrar", file:"Seleccionar caràtula",
-    trailerBtn:"Veure tràiler", chat:"Pregunta...", send:"Enviar", close:"Tancar",
-    apis:"APIs", tmdbKey:"API key de TMDB", routerKey:"Routercode / API key d'OpenRouter", model:"Model OpenRouter",
-    saveSettings:"Guardar ajustos", settingsNote:"Les claus es guarden només en aquest navegador amb localStorage.",
-    noTmdbKey:"Afegeix la teva API key de TMDB a Ajustos.", searching:"Cercant...",
-    tmdbError:"Error en cercar a TMDB.", tmdbLoadError:"Error en carregar la pel·lícula.",
-    noOpenRouter:"Afegeix el teu routercode d'OpenRouter a Ajustos.", noYear:"Sense any", noRating:"Sense nota",
-    noOverview:"Sense sinopsi disponible", noResponse:"Sense resposta.", openRouterError:"Error en connectar amb OpenRouter.",
-    confirmDeleteMovie:"Eliminar?", noYearCatalog:"sense any"
-  },
-  es: {
-    search:"Buscar en la colección...", settings:"Ajustes", curation:"Añadir película",
-    tmdbSearch:"Buscar título en TMDB...", title:"Título", year:"Año", actor:"Actor principal", actress:"Actriz principal",
-    director:"Director", genre:"Género", cover:"URL portada", trailer:"URL trailer", overview:"Sinopsis",
-    add:"Añadir", cancel:"Cancelar", all:"Todos", empty:"Sin películas en el catálogo", edit:"Edit", del:"Del", file:"Seleccionar carátula",
-    trailerBtn:"Ver trailer", chat:"Pregunta...", send:"Enviar", close:"Cerrar",
-    apis:"APIs", tmdbKey:"API key de TMDB", routerKey:"Routercode / API key de OpenRouter", model:"Modelo OpenRouter",
-    saveSettings:"Guardar ajustes", settingsNote:"Las claves se guardan solo en este navegador con localStorage.",
-    noTmdbKey:"Añade tu API key de TMDB en Ajustes.", searching:"Buscando...",
-    tmdbError:"Error al buscar en TMDB.", tmdbLoadError:"Error al cargar la película.",
-    noOpenRouter:"Añade tu routercode de OpenRouter en Ajustes.", noYear:"Sin año", noRating:"Sin nota",
-    noOverview:"Sin sinopsis disponible", noResponse:"Sin respuesta.", openRouterError:"Error al conectar con OpenRouter.",
-    confirmDeleteMovie:"¿Eliminar?", noYearCatalog:"sin año"
-  },
-  en: {
-    search:"Search the collection...", settings:"Settings", curation:"Add movie",
-    tmdbSearch:"Search title on TMDB...", title:"Title", year:"Year", actor:"Lead actor", actress:"Lead actress",
-    director:"Director", genre:"Genre", cover:"Poster URL", trailer:"Trailer URL", overview:"Synopsis",
-    add:"Add", cancel:"Cancel", all:"All", empty:"No films in the catalog", edit:"Edit", del:"Delete", file:"Select poster",
-    trailerBtn:"Watch trailer", chat:"Ask...", send:"Send", close:"Close",
-    apis:"APIs", tmdbKey:"TMDB API key", routerKey:"OpenRouter routercode / API key", model:"OpenRouter model",
-    saveSettings:"Save settings", settingsNote:"Keys are stored only in this browser with localStorage.",
-    noTmdbKey:"Add your TMDB API key in Settings.", searching:"Searching...",
-    tmdbError:"Error searching TMDB.", tmdbLoadError:"Error loading the film.",
-    noOpenRouter:"Add your OpenRouter routercode in Settings.", noYear:"No year", noRating:"No rating",
-    noOverview:"No synopsis available", noResponse:"No response.", openRouterError:"Error connecting to OpenRouter.",
-    confirmDeleteMovie:"Delete?", noYearCatalog:"no year"
-  }
-};
+function afterLogin() {
+  updateUserUI();
+  loadCatalog();
+  renderCatalog();
+}
 
-let settings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {tmdbKey:"",openRouterKey:"",openRouterModel:"openrouter/auto"};
-let currentLang = localStorage.getItem(LANG_KEY) || "ca";
-let data = [];
-let editing = null;
+// ════════════════════════════════════════
+// VIEW SWITCHING
+// ════════════════════════════════════════
+function showView(view) {
+  document.getElementById('catalogView').style.display = view === 'catalog' ? '' : 'none';
+  document.getElementById('newsView').style.display = view === 'news' ? '' : 'none';
+  document.getElementById('btnCatalog').classList.toggle('active', view === 'catalog');
+  document.getElementById('btnNews').classList.toggle('active', view === 'news');
+  if (view === 'news') loadHistory();
+}
+
+// ════════════════════════════════════════
+// CATALOG
+// ════════════════════════════════════════
+const SETTINGS_KEY = 'vc_settings';
+const LANG_KEY = 'vc_language';
+const EMPTY_POSTER = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDIwMCAzMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMTEiLz48dGV4dCB4PSIxMDAiIHk9IjE1MCIgZmlsbD0iIzY2NiIgZm9udC1zaXplPSIxNCIgZm9udC1mYW1pbHk9IkFyaWFsIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TaW4gcG9ydGFkYTwvdGV4dD48L3N2Zz4=";
+
+let settings = JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {openRouterKey:'',openRouterModel:'openrouter/auto'};
+let currentLang = localStorage.getItem(LANG_KEY) || 'ca';
+let movies = [];
+let editingId = null;
 let tmdbTimer = null;
 let tmdbDraft = {};
 
 function catalogKey() { return `vc_movies_${authUser?.id || 'guest'}`; }
-
-function updateCurrentUser() {
-  if (!authUser) return;
-  currentAvatar.textContent = (authUser.name[0] || 'U').toUpperCase();
-  currentUserName.textContent = authUser.name;
-}
-
-function saveCatalog() { localStorage.setItem(catalogKey(), JSON.stringify(data)); }
-
+function saveCatalog() { localStorage.setItem(catalogKey(), JSON.stringify(movies)); }
 function loadCatalog() {
   const saved = localStorage.getItem(catalogKey());
-  data = saved ? (JSON.parse(saved) || []) : [];
+  movies = saved ? (JSON.parse(saved) || []) : [];
 }
 
-function escapeHtml(value) {
-  return String(value || "").replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+function updateUserUI() {
+  if (!authUser) return;
+  document.getElementById('currentAvatar').textContent = (authUser.name[0] || 'U').toUpperCase();
+  document.getElementById('currentUserName').textContent = authUser.name;
 }
 
-function t(key) { return LANG[currentLang][key] || LANG.ca[key] || key; }
-
-function setText(id, key) { const el = document.getElementById(id); if(el) el.textContent = t(key); }
-function setPlaceholder(id, key) { const el = document.getElementById(id); if(el) el.placeholder = t(key); }
-
-function applyLanguage() {
-  languageSelect.value = currentLang;
-  setPlaceholder("search","search");
-  setPlaceholder("tmdbSearch","tmdbSearch");
-  setPlaceholder("title","title");
-  setPlaceholder("year","year");
-  setPlaceholder("actor","actor");
-  setPlaceholder("actress","actress");
-  setPlaceholder("director","director");
-  setPlaceholder("genre","genre");
-  setPlaceholder("coverUrl","cover");
-  setPlaceholder("trailerUrl","trailer");
-  setPlaceholder("overview","overview");
-  setPlaceholder("chatInput","chat");
-  setPlaceholder("settingsOpenRouterKey","routerKey");
-  setPlaceholder("settingsOpenRouterModel","model");
-  setText("settingsBtn","settings");
-  setText("curationTitle","curation");
-  setText("addMovieBtn","add");
-  setText("cancelMovieBtn","cancel");
-  if(!file.files.length) setText("fileLabel","file");
-  setText("sendChatBtn","send");
-  setText("settingsTitle","settings");
-  setText("apisTitle","apis");
-  setText("saveSettingsBtn","saveSettings");
-  setText("settingsNote","settingsNote");
-  document.querySelectorAll(".close-btn").forEach(btn => btn.textContent = t("close"));
-  const allOption = filter.querySelector("option[value='']");
-  if(allOption) allOption.textContent = t("all");
+function esc(v) {
+  return String(v||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-function changeLanguage(lang) {
-  currentLang = lang;
-  localStorage.setItem(LANG_KEY, lang);
-  applyLanguage();
-  render();
-}
-
-function updateFileLabel() {
-  fileLabel.textContent = file.files[0]?.name || t("file");
-}
-
-function render() {
-  updateCurrentUser();
-  const q = search.value.toLowerCase();
-  const f = filter.value;
-  const filtered = data.filter(m => (!q || (m.title || "").toLowerCase().includes(q)) && (!f || m.genre === f));
-
+function renderCatalog() {
+  const q = (document.getElementById('catalogSearch')?.value || '').toLowerCase();
+  const f = document.getElementById('catalogFilter')?.value || '';
+  const filtered = movies.filter(m => (!q || (m.title||'').toLowerCase().includes(q)) && (!f || m.genre === f));
+  const grid = document.getElementById('movieGrid');
   if (!filtered.length) {
-    list.innerHTML = `<div class="empty">${t("empty")}</div>`;
+    grid.innerHTML = `<div class="catalog-empty">Cap pel·lícula al catàleg</div>`;
     return;
   }
-
-  list.innerHTML = filtered.map(m => `
-    <div class="card">
-      <img src="${escapeHtml(m.cover || EMPTY_POSTER)}" alt="${escapeHtml(m.title)}" onerror="this.src='${EMPTY_POSTER}'">
-      <div class="card-body">
-        <b>${escapeHtml(m.title)}</b>
-        <div class="small">${escapeHtml(m.year)}</div>
-        <div class="small">${escapeHtml(m.genre)}</div>
-        <div class="small">Dir: ${escapeHtml(m.director)}</div>
-        <div class="small">${escapeHtml(m.actor)} / ${escapeHtml(m.actress)}</div>
-        ${m.runtime ? `<div class="small">${escapeHtml(m.runtime)} min</div>` : ""}
-        ${m.vote ? `<div class="small">TMDB: ${escapeHtml(m.vote)}/10</div>` : ""}
-        ${m.overview ? `<div class="small overview">${escapeHtml(m.overview)}</div>` : ""}
-        ${m.trailer ? `<a class="trailer-link" href="${escapeHtml(m.trailer)}" target="_blank" rel="noopener">${t("trailerBtn")}</a>` : ""}
-        <div class="actions">
-          <button onclick="editMovie('${m.id}')">${t("edit")}</button>
-          <button onclick="deleteMovie('${m.id}')">${t("del")}</button>
+  grid.innerHTML = filtered.map(m => `
+    <div class="movie-card">
+      <img src="${esc(m.cover||EMPTY_POSTER)}" alt="${esc(m.title)}" onerror="this.src='${EMPTY_POSTER}'">
+      <div class="movie-card-body">
+        <b>${esc(m.title)}</b>
+        <div class="small">${esc(m.year)} ${m.genre ? '· '+esc(m.genre) : ''}</div>
+        <div class="small">Dir: ${esc(m.director)}</div>
+        <div class="small">${esc(m.actor)}${m.actress ? ' / '+esc(m.actress) : ''}</div>
+        ${m.runtime ? `<div class="small">${esc(m.runtime)} min</div>` : ''}
+        ${m.vote ? `<div class="small">TMDB: ${esc(m.vote)}/10</div>` : ''}
+        ${m.overview ? `<div class="small overview-clamp">${esc(m.overview)}</div>` : ''}
+        ${m.trailer ? `<a class="trailer-link" href="${esc(m.trailer)}" target="_blank" rel="noopener">▶ Tràiler</a>` : ''}
+        <div class="card-actions">
+          <button onclick="editMovie('${m.id}')">Editar</button>
+          <button onclick="deleteMovie('${m.id}')">Eliminar</button>
         </div>
       </div>
     </div>
-  `).join("");
+  `).join('');
 }
 
-form.onsubmit = e => {
+document.getElementById('catalogSearch').oninput = renderCatalog;
+document.getElementById('catalogFilter').onchange = renderCatalog;
+
+document.getElementById('movieForm').onsubmit = e => {
   e.preventDefault();
-  const currentMovie = editing ? data.find(x => x.id === editing) || {} : {};
+  const cur = editingId ? movies.find(x => x.id === editingId) || {} : {};
   const m = {
-    id: editing || Date.now() + "",
+    id: editingId || Date.now()+'',
     title: title.value, year: year.value, actor: actor.value, actress: actress.value,
     director: director.value, genre: genre.value, cover: coverUrl.value,
     trailer: trailerUrl.value, overview: overview.value,
-    runtime: tmdbDraft.runtime || currentMovie.runtime || "",
-    vote: tmdbDraft.vote || currentMovie.vote || "",
-    tmdbId: tmdbDraft.tmdbId || currentMovie.tmdbId || ""
+    runtime: tmdbDraft.runtime || cur.runtime || '',
+    vote: tmdbDraft.vote || cur.vote || '',
+    tmdbId: tmdbDraft.tmdbId || cur.tmdbId || ''
   };
-  if (file.files[0]) {
+  const f = document.getElementById('file');
+  if (f.files[0]) {
     const r = new FileReader();
     r.onload = () => { m.cover = r.result; saveMovie(m); };
-    r.readAsDataURL(file.files[0]);
+    r.readAsDataURL(f.files[0]);
   } else { saveMovie(m); }
 };
 
 function saveMovie(m) {
-  if (editing) { data[data.findIndex(x => x.id === editing)] = m; }
-  else { data.unshift(m); }
-  saveCatalog(); cancelMovie(); render();
+  if (editingId) { movies[movies.findIndex(x => x.id === editingId)] = m; }
+  else { movies.unshift(m); }
+  saveCatalog(); cancelMovie(); renderCatalog();
 }
 
 function editMovie(id) {
-  const m = data.find(x => x.id === id);
-  if (!m) return;
-  editing = id;
-  title.value = m.title || ""; year.value = m.year || "";
-  actor.value = m.actor || ""; actress.value = m.actress || "";
-  director.value = m.director || ""; genre.value = m.genre || "";
-  coverUrl.value = m.cover || ""; trailerUrl.value = m.trailer || "";
-  overview.value = m.overview || "";
-  tmdbDraft = {runtime:m.runtime||"", vote:m.vote||"", tmdbId:m.tmdbId||""};
+  const m = movies.find(x => x.id === id); if (!m) return;
+  editingId = id;
+  title.value = m.title||''; year.value = m.year||''; actor.value = m.actor||'';
+  actress.value = m.actress||''; director.value = m.director||''; genre.value = m.genre||'';
+  coverUrl.value = m.cover||''; trailerUrl.value = m.trailer||''; overview.value = m.overview||'';
+  tmdbDraft = {runtime:m.runtime||'', vote:m.vote||'', tmdbId:m.tmdbId||''};
+  document.getElementById('curationTitle').textContent = 'Editar pel·lícula';
 }
 
-function cancelMovie() { editing = null; tmdbDraft = {}; form.reset(); updateFileLabel(); }
+function cancelMovie() {
+  editingId = null; tmdbDraft = {};
+  document.getElementById('movieForm').reset();
+  document.getElementById('fileLabel').textContent = 'Seleccionar carátula';
+  document.getElementById('curationTitle').textContent = 'Afegir pel·lícula';
+}
 
 function deleteMovie(id) {
-  if (!confirm(t("confirmDeleteMovie"))) return;
-  data = data.filter(x => x.id !== id);
-  saveCatalog(); render();
+  if (!confirm('Eliminar?')) return;
+  movies = movies.filter(x => x.id !== id);
+  saveCatalog(); renderCatalog();
 }
 
-function openModal(id) { document.getElementById(id).classList.add("open"); }
-function closeModal(id) { document.getElementById(id).classList.remove("open"); }
-
-function openSettings() {
-  settingsOpenRouterKey.value = settings.openRouterKey || "";
-  settingsOpenRouterModel.value = settings.openRouterModel || "openrouter/auto";
-  openModal("settingsModal");
+function updateFileLabel() {
+  const f = document.getElementById('file');
+  document.getElementById('fileLabel').textContent = f.files[0]?.name || 'Seleccionar carátula';
 }
 
-function saveSettings() {
-  settings = {
-    openRouterKey: settingsOpenRouterKey.value.trim(),
-    openRouterModel: settingsOpenRouterModel.value.trim() || "openrouter/auto"
-  };
-  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-  closeModal("settingsModal");
-}
-
-search.oninput = render;
-filter.onchange = render;
-
-tmdbSearch.oninput = () => {
+// TMDB via server proxy
+document.getElementById('tmdbSearch').oninput = () => {
   clearTimeout(tmdbTimer);
-  const q = tmdbSearch.value.trim();
-  if (q.length < 3) { tmdbResults.innerHTML = ""; return; }
+  const q = document.getElementById('tmdbSearch').value.trim();
+  if (q.length < 3) { document.getElementById('tmdbResults').innerHTML = ''; return; }
   tmdbTimer = setTimeout(() => searchTMDB(q), 350);
 };
 
 async function searchTMDB(q) {
-  tmdbResults.innerHTML = t("searching");
+  const res = document.getElementById('tmdbResults');
+  res.innerHTML = 'Cercant...';
   try {
     const r = await fetch(`/api/tmdb?path=search/movie&query=${encodeURIComponent(q)}&language=es-ES`);
     const d = await r.json();
-    tmdbResults.innerHTML = (d.results || []).slice(0, 5).map(m => `
+    res.innerHTML = (d.results||[]).slice(0,5).map(m => `
       <div onclick="loadTMDB(${m.id})" class="tmdb-result">
-        <img src="${m.poster_path ? `https://image.tmdb.org/t/p/w92${m.poster_path}` : EMPTY_POSTER}" alt="${escapeHtml(m.title)}">
+        <img src="${m.poster_path ? `https://image.tmdb.org/t/p/w92${m.poster_path}` : EMPTY_POSTER}" alt="${esc(m.title)}">
         <div>
-          <div class="tmdb-title">${escapeHtml(m.title)}</div>
-          <div class="tmdb-meta">${m.release_date ? escapeHtml(m.release_date.slice(0,4)) : t("noYear")} · ${m.vote_average ? escapeHtml(m.vote_average.toFixed(1)) + "/10" : t("noRating")}</div>
-          <div class="tmdb-meta">${escapeHtml((m.overview || t("noOverview")).slice(0,90))}${m.overview && m.overview.length > 90 ? "..." : ""}</div>
+          <div class="tmdb-title">${esc(m.title)}</div>
+          <div class="tmdb-meta">${m.release_date ? esc(m.release_date.slice(0,4)) : 'Sense any'} · ${m.vote_average ? esc(m.vote_average.toFixed(1))+'/10' : 'Sense nota'}</div>
+          <div class="tmdb-meta">${esc((m.overview||'Sense sinopsi').slice(0,90))}${(m.overview||'').length>90?'...':''}</div>
         </div>
       </div>
-    `).join("");
-  } catch(e) { tmdbResults.innerHTML = t("tmdbError"); }
+    `).join('');
+  } catch { res.innerHTML = 'Error en la cerca.'; }
 }
 
 async function loadTMDB(id) {
   try {
     const r = await fetch(`/api/tmdb?path=movie/${id}&append_to_response=credits,videos&language=es-ES`);
     const m = await r.json();
-    const trailer = findTrailer(m.videos?.results || []);
-    title.value = m.title || ""; year.value = m.release_date?.slice(0,4) || "";
-    genre.value = (m.genres || []).map(g => g.name).join(", ");
-    coverUrl.value = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : "";
-    trailerUrl.value = trailer; overview.value = m.overview || "";
-    const cast = m.credits?.cast || [];
-    actor.value = cast[0]?.name || "";
-    actress.value = cast.find(c => c.gender === 1)?.name || "";
-    director.value = m.credits?.crew?.find(c => c.job === "Director")?.name || "";
-    tmdbDraft = { tmdbId:m.id||"", runtime:m.runtime||"", vote:m.vote_average ? m.vote_average.toFixed(1) : "" };
-    tmdbResults.innerHTML = "";
-  } catch(e) { tmdbResults.innerHTML = t("tmdbLoadError"); }
+    const trailer = findTrailer(m.videos?.results||[]);
+    document.getElementById('title').value = m.title||'';
+    document.getElementById('year').value = m.release_date?.slice(0,4)||'';
+    document.getElementById('genre').value = (m.genres||[]).map(g=>g.name).join(', ');
+    document.getElementById('coverUrl').value = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '';
+    document.getElementById('trailerUrl').value = trailer;
+    document.getElementById('overview').value = m.overview||'';
+    const cast = m.credits?.cast||[];
+    document.getElementById('actor').value = cast[0]?.name||'';
+    document.getElementById('actress').value = cast.find(c=>c.gender===1)?.name||'';
+    document.getElementById('director').value = m.credits?.crew?.find(c=>c.job==='Director')?.name||'';
+    tmdbDraft = {tmdbId:m.id||'', runtime:m.runtime||'', vote:m.vote_average?m.vote_average.toFixed(1):''};
+    document.getElementById('tmdbResults').innerHTML = '';
+    document.getElementById('tmdbSearch').value = '';
+  } catch { document.getElementById('tmdbResults').innerHTML = 'Error en carregar la pel·lícula.'; }
 }
 
 function findTrailer(videos) {
-  const t = videos.find(v => v.site === "YouTube" && v.type === "Trailer") ||
-    videos.find(v => v.site === "YouTube" && v.type === "Teaser") ||
-    videos.find(v => v.site === "YouTube");
-  return t ? `https://www.youtube.com/watch?v=${t.key}` : "";
+  const v = videos.find(v=>v.site==='YouTube'&&v.type==='Trailer') || videos.find(v=>v.site==='YouTube'&&v.type==='Teaser') || videos.find(v=>v.site==='YouTube');
+  return v ? `https://www.youtube.com/watch?v=${v.key}` : '';
 }
 
-function toggleChat() { chat.style.display = chat.style.display === "flex" ? "none" : "flex"; }
+// ════════════════════════════════════════
+// NEWS
+// ════════════════════════════════════════
+let currentHistoryId = null;
 
-function cleanChatText(text) {
-  return String(text || "").replace(/\*\*(.*?)\*\*/g,"$1").replace(/^\s*[-*]\s+/gm,"").trim();
+async function doNewsSearch() {
+  const topic = document.getElementById('newsTopicInput').value.trim();
+  if (!topic) return;
+  const btn = document.getElementById('newsSearchBtn');
+  btn.disabled = true;
+  document.getElementById('newsLoading').style.display = 'block';
+  clearNewsResults();
+  try {
+    const r = await fetch('/api/news-search', {
+      method:'POST',
+      headers:{'Content-Type':'application/json', Authorization:`Bearer ${token}`},
+      body:JSON.stringify({topic})
+    });
+    const d = await r.json();
+    if (!r.ok) { showNewsError(d.error||'Error desconegut'); return; }
+    renderNewsResults(topic, d.summary, d.articles);
+    loadHistory();
+  } catch(e) { showNewsError('Error de connexió: '+e.message); }
+  finally { btn.disabled = false; document.getElementById('newsLoading').style.display = 'none'; }
+}
+
+function clearNewsResults() {
+  document.getElementById('summaryBox').style.display = 'none';
+  document.getElementById('articlesList').innerHTML = '';
+  currentHistoryId = null;
+  document.querySelectorAll('.history-item').forEach(el=>el.classList.remove('active'));
+}
+
+function showNewsError(msg) {
+  document.getElementById('articlesList').innerHTML = `<div class="news-empty">${esc(msg)}</div>`;
+}
+
+function renderNewsResults(topic, summary, articles) {
+  if (summary) {
+    document.getElementById('summaryTopic').textContent = 'Resum: '+topic;
+    document.getElementById('summaryText').textContent = summary;
+    document.getElementById('summaryBox').style.display = 'block';
+  }
+  if (!articles.length) {
+    document.getElementById('articlesList').innerHTML = '<div class="news-empty">No s\'han trobat notícies per aquest tema.</div>';
+    return;
+  }
+  document.getElementById('articlesList').innerHTML = articles.map(a=>`
+    <div class="article-card">
+      <div class="article-source">${esc(a.source)}</div>
+      <div class="article-title">${esc(a.title)}</div>
+      ${a.description?`<div class="article-desc">${esc(a.description)}</div>`:''}
+      <div class="article-meta">
+        <span class="article-date">${formatDate(a.publishedAt)}</span>
+        <a class="article-link" href="${esc(a.url)}" target="_blank" rel="noopener">Llegir</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadHistory() {
+  if (!token) return;
+  try {
+    const r = await fetch('/api/history', { headers:{Authorization:`Bearer ${token}`} });
+    if (!r.ok) return;
+    const {history} = await r.json();
+    renderHistory(history);
+  } catch {}
+}
+
+function renderHistory(history) {
+  const el = document.getElementById('historyList');
+  if (!history.length) { el.innerHTML = '<div class="history-empty">Cap cerca encara</div>'; return; }
+  el.innerHTML = history.map(h=>`
+    <div class="history-item ${h.id===currentHistoryId?'active':''}" onclick="loadHistoryItem(${h.id},this)">
+      <div class="history-topic">${esc(h.topic)}</div>
+      <div class="history-date">${formatDate(h.created_at)}</div>
+      ${h.summary?`<div class="history-summary">${esc(h.summary)}</div>`:''}
+    </div>
+  `).join('');
+}
+
+function loadHistoryItem(id, el) {
+  document.querySelectorAll('.history-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  currentHistoryId = id;
+  fetch('/api/history', {headers:{Authorization:`Bearer ${token}`}})
+    .then(r=>r.json())
+    .then(({history})=>{
+      const item = history.find(h=>h.id===id);
+      if (!item) return;
+      document.getElementById('newsTopicInput').value = item.topic;
+      renderNewsResults(item.topic, item.summary, item.articles||[]);
+    });
+}
+
+// ════════════════════════════════════════
+// CHAT
+// ════════════════════════════════════════
+function toggleChat() {
+  const c = document.getElementById('chat');
+  c.style.display = c.style.display === 'flex' ? 'none' : 'flex';
 }
 
 async function sendChat() {
-  const q = chatInput.value.trim();
-  if (!q) return;
-  chatBody.innerHTML += `<div class="msg-user">${escapeHtml(q)}</div>`;
-  chatInput.value = "";
+  const input = document.getElementById('chatInput');
+  const q = input.value.trim(); if (!q) return;
+  const body = document.getElementById('chatBody');
+  body.innerHTML += `<div class="msg-user">${esc(q)}</div>`;
+  input.value = '';
   try {
-    const catalog = data.slice(0,80).map(m => `${m.title} (${m.year || t("noYearCatalog")})`).join(", ");
-    const r = await fetch("/api/legaamaar", {
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({
-        model: settings.openRouterModel || "openrouter/auto",
-        openRouterKey: settings.openRouterKey || "",
+    const catalog = movies.slice(0,80).map(m=>`${m.title} (${m.year||'s/a'})`).join(', ');
+    const r = await fetch('/api/legaamaar', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model: settings.openRouterModel||'openrouter/auto',
+        openRouterKey: settings.openRouterKey||'',
         messages:[
-          {role:"system",content:`Eres el conserje de un videoclub selecto llamado Le Gamaar Cinema. Responde en ${currentLang === "ca" ? "catalán" : currentLang === "en" ? "inglés" : "español"}. Sé breve, cálido y con criterio. Máximo 5 líneas. No uses markdown, asteriscos, listas largas ni títulos en negrita. Si recomiendas películas, da como máximo 3 y explica en una frase por qué.`},
-          {role:"user",content:`Usuari: ${authUser?.name || ''}. Catàleg: ${catalog || "buit"}. Pregunta: ${q}`}
+          {role:'system',content:`Ets el conserge d'un videoclub seleccionat anomenat Le Gamaar. Respon en ${currentLang==='ca'?'català':currentLang==='en'?'anglès':'castellà'}. Breu, càlid i amb criteri. Màxim 5 línies. Sense markdown.`},
+          {role:'user',content:`Usuari: ${authUser?.name||''}. Catàleg: ${catalog||'buit'}. Pregunta: ${q}`}
         ]
       })
     });
     const d = await r.json();
-    if (!r.ok) throw new Error(d.error?.message || `HTTP ${r.status}`);
-    chatBody.innerHTML += `<div class="msg-ai">${escapeHtml(cleanChatText(d.choices?.[0]?.message?.content || t("noResponse")))}</div>`;
+    if (!r.ok) throw new Error(d.error?.message||`HTTP ${r.status}`);
+    const text = (d.choices?.[0]?.message?.content||'Sense resposta').replace(/\*\*(.*?)\*\*/g,'$1').replace(/^\s*[-*]\s+/gm,'').trim();
+    body.innerHTML += `<div class="msg-ai">${esc(text)}</div>`;
   } catch(e) {
-    chatBody.innerHTML += `<div class="msg-ai">${t("openRouterError")} ${escapeHtml(e.message || "")}</div>`;
+    body.innerHTML += `<div class="msg-ai">Error: ${esc(e.message)}</div>`;
   }
-  chatBody.scrollTop = chatBody.scrollHeight;
+  body.scrollTop = body.scrollHeight;
 }
 
+// ════════════════════════════════════════
+// SETTINGS
+// ════════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function openSettings() {
+  document.getElementById('settingsOpenRouterKey').value = settings.openRouterKey||'';
+  document.getElementById('settingsOpenRouterModel').value = settings.openRouterModel||'openrouter/auto';
+  openModal('settingsModal');
+}
+
+function saveSettings() {
+  settings = {
+    openRouterKey: document.getElementById('settingsOpenRouterKey').value.trim(),
+    openRouterModel: document.getElementById('settingsOpenRouterModel').value.trim()||'openrouter/auto'
+  };
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  closeModal('settingsModal');
+}
+
+// ════════════════════════════════════════
+// LANGUAGE
+// ════════════════════════════════════════
+function changeLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem(LANG_KEY, lang);
+}
+
+// ════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════
+function formatDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('ca-ES',{day:'numeric',month:'short',year:'numeric'});
+}
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
 async function init() {
+  languageSelect.value = currentLang;
   const ok = await checkAuth();
   if (!ok) return;
-  applyLanguage();
-  updateCurrentUser();
+  updateUserUI();
   loadCatalog();
-  render();
+  renderCatalog();
 }
 
 init();
 </script>
-
 </body>
 </html>
